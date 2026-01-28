@@ -6,13 +6,18 @@ namespace InfiniteLeafLabb2.Controllers
     {
         public IActionResult Index()
         {
-            // Check if user is authenticated (you can implement proper auth later)
-            var isAuthenticated = HttpContext.Session.GetString("IsAdmin") == "true";
+            // Check if user has a valid JWT token
+            var token = HttpContext.Session.GetString("JwtToken");
+            var isAdmin = HttpContext.Session.GetString("IsAdmin");
 
-            if (!isAuthenticated)
+            if (string.IsNullOrEmpty(token) || isAdmin != "true")
             {
                 return RedirectToAction("Index", "Auth");
             }
+
+            // Get username from session to display
+            var username = HttpContext.Session.GetString("Username");
+            ViewBag.Username = username;
 
             return View();
         }

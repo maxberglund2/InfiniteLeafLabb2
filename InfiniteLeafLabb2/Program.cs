@@ -1,3 +1,5 @@
+using InfiniteLeafLabb2.Services;
+
 namespace InfiniteLeafLabb2
 {
     public class Program
@@ -9,6 +11,9 @@ namespace InfiniteLeafLabb2
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            // Add HttpContextAccessor
+            builder.Services.AddHttpContextAccessor();
+
             // Add Session support
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddSession(options =>
@@ -17,6 +22,19 @@ namespace InfiniteLeafLabb2
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
+
+            // Configure HttpClient for API calls
+            builder.Services.AddHttpClient<ApiService>(client =>
+            {
+                // Read API base URL from configuration
+                var apiBaseUrl = builder.Configuration["ApiSettings:BaseUrl"] ?? "https://localhost:7154";
+                client.BaseAddress = new Uri(apiBaseUrl);
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
+
+            // Register application services
+            builder.Services.AddScoped<MenuService>();
+            builder.Services.AddScoped<ReservationService>();
 
             var app = builder.Build();
 

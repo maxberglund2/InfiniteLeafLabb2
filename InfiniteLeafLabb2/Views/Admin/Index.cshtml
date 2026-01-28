@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Admin Dashboard";
+    var username = ViewBag.Username ?? "Admin";
 }
 
 <div class="min-h-screen flex items-center justify-center px-4">
@@ -7,7 +8,7 @@
         <div class="text-center mb-8">
             <div class="text-6xl mb-4">🍃</div>
             <h1 class="text-5xl font-bold mb-2" style="color: #FFFFFF;">Admin Dashboard</h1>
-            <p class="text-lg" style="color: #9CA3AF;">Welcome to Infinite Leaf Admin Portal</p>
+            <p class="text-lg" style="color: #9CA3AF;">Welcome back, <span class="text-emerald-600 font-semibold">@username</span></p>
         </div>
 
         <div class="rounded-2xl p-8" style="background-color: rgba(39, 57, 28, 0.4); border: 2px solid rgba(37, 95, 56, 0.3); backdrop-filter: blur(12px);">
@@ -39,5 +40,16 @@
                 </a>
             </div>
         </div>
+
+        <!-- JWT Token Info (Development Only) -->
+        @if (Context.Session.GetString("JwtToken") != null)
+        {
+            <div class="mt-4 p-4 rounded-lg" style="background-color: rgba(24, 35, 15, 0.3); border: 1px solid rgba(37, 95, 56, 0.2);">
+                <p class="text-xs" style="color: #9CA3AF;">
+                    🔐 Authenticated with JWT Token
+                    <span class="block mt-1 text-emerald-600">Session active until logout</span>
+                </p>
+            </div>
+        }
     </div>
 </div>
