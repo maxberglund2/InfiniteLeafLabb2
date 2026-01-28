@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="min-h-screen flex items-center justify-center px-4">
+    <div class="max-w-4xl w-full">
+        <div class="text-center mb-8">
+            <div class="text-6xl mb-4">🍃</div>
+            <h1 class="text-5xl font-bold mb-2" style="color: #FFFFFF;">Admin Dashboard</h1>
+            <p class="text-lg" style="color: #9CA3AF;">Welcome to Infinite Leaf Admin Portal</p>
+        </div>
+
+        <div class="rounded-2xl p-8" style="background-color: rgba(39, 57, 28, 0.4); border: 2px solid rgba(37, 95, 56, 0.3); backdrop-filter: blur(12px);">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="rounded-xl p-6 text-center" style="background-color: rgba(24, 35, 15, 0.5); border: 1px solid rgba(37, 95, 56, 0.2);">
+                    <div class="text-4xl mb-2">📊</div>
+                    <h3 class="font-bold text-lg mb-1" style="color: #1F7D53;">Analytics</h3>
+                    <p class="text-sm" style="color: #9CA3AF;">View statistics</p>
+                </div>
+
+                <div class="rounded-xl p-6 text-center" style="background-color: rgba(24, 35, 15, 0.5); border: 1px solid rgba(37, 95, 56, 0.2);">
+                    <div class="text-4xl mb-2">🍵</div>
+                    <h3 class="font-bold text-lg mb-1" style="color: #1F7D53;">Menu</h3>
+                    <p class="text-sm" style="color: #9CA3AF;">Manage menu items</p>
+                </div>
+
+                <div class="rounded-xl p-6 text-center" style="background-color: rgba(24, 35, 15, 0.5); border: 1px solid rgba(37, 95, 56, 0.2);">
+                    <div class="text-4xl mb-2">📅</div>
+                    <h3 class="font-bold text-lg mb-1" style="color: #1F7D53;">Bookings</h3>
+                    <p class="text-sm" style="color: #9CA3AF;">View reservations</p>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <a href="@Url.Action("Logout", "Auth")"
+                   class="inline-block px-8 py-3 text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
+                   style="background: linear-gradient(to right, #DC2626, #B91C1C);">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
