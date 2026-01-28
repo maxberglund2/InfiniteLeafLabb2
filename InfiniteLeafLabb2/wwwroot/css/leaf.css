@@ -1,1 +1,10 @@
 ﻿/*COLOR palette*/
+
+:root {
+    --color-primary: #4CAF50; /* Green */
+    --color-secondary: #FF9800; /* Orange */
+    --color-accent: #2196F3; /* Blue */
+    --color-background: #F5F5F5; /* Light Grey */
+    --color-text: #212121; /* Dark Grey */
+    --color-border: #E0E0E0; /* Light Border Grey */
+}
