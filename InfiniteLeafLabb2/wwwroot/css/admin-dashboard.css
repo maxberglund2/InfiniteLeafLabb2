@@ -1,0 +1,97 @@
+﻿/* InfiniteLeaf Color Palette */
+
+:root {
+    /* InfiniteLeaf Color Palette */
+    --color-dark-forest: #18230F;
+    --color-moss: #27391C;
+    --color-jade: #255F38;
+    --color-emerald: #1F7D53;
+    /* Semantic Colors */
+    --background: #18230F;
+    --foreground: #F5F5F0;
+    --card-bg: #27391C;
+    --card-hover: #255F38;
+    --accent: #1F7D53;
+    /* Typography */
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
+}
+
+/* Color utility classes */
+.bg-dark-forest {
+    background-color: #18230F;
+}
+
+.bg-moss {
+    background-color: #27391C;
+}
+
+.bg-jade {
+    background-color: #255F38;
+}
+
+.bg-emerald {
+    background-color: #1F7D53;
+}
+
+.text-dark-forest {
+    color: #18230F;
+}
+
+.text-moss {
+    color: #27391C;
+}
+
+.text-jade {
+    color: #255F38;
+}
+
+.text-emerald {
+    color: #1F7D53;
+}
+
+.border-dark-forest {
+    border-color: #18230F;
+}
+
+.border-moss {
+    border-color: #27391C;
+}
+
+.border-jade {
+    border-color: #255F38;
+}
+
+.border-emerald {
+    border-color: #1F7D53;
+}
+
+/* Gradient utility classes */
+.from-jade {
+    --tw-gradient-from: #255F38;
+}
+
+.to-emerald {
+    --tw-gradient-to: #1F7D53;
+}
+
+.from-emerald {
+    --tw-gradient-from: #1F7D53;
+}
+
+.to-jade {
+    --tw-gradient-to: #255F38;
+}
+
+.via-jade {
+    --tw-gradient-via: #255F38;
+}
+
+/* Additional utility classes for gradient backgrounds */
+.bg-gradient-to-r {
+    background-image: linear-gradient(to right, var(--tw-gradient-from), var(--tw-gradient-to));
+}
+
+.bg-gradient-to-br {
+    background-image: linear-gradient(to bottom right, var(--tw-gradient-from), var(--tw-gradient-to));
+}

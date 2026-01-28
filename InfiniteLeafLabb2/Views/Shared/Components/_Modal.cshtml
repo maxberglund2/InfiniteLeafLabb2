@@ -1,0 +1,159 @@
+﻿<div id="crud-modal" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4" style="background-color: rgba(0, 0, 0, 0.7);">
+    <div class="modal-content rounded-2xl shadow-2xl w-full max-w-2xl p-8 relative animate-modal"
+         style="background-color: rgba(39, 57, 28, 0.95); border: 2px solid rgba(37, 95, 56, 0.5); backdrop-filter: blur(12px);">
+
+        <!-- Close Button -->
+        <button id="modal-close" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors text-2xl">
+            ×
+        </button>
+
+        <!-- Modal Header -->
+        <div class="mb-6">
+            <div class="text-4xl mb-2" id="modal-icon">📝</div>
+            <h2 class="text-3xl font-bold text-white" id="modal-title">Create Item</h2>
+            <p class="text-sm mt-1" style="color: #9CA3AF;" id="modal-subtitle">Fill in the details below</p>
+        </div>
+
+        <!-- Error Display -->
+        <div id="modal-error" class="hidden px-4 py-3 rounded-lg mb-4"
+             style="background-color: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #FCA5A5;">
+        </div>
+
+        <!-- Form Container -->
+        <form id="modal-form" class="space-y-4">
+            <!-- Dynamic form fields will be injected here -->
+            <div id="form-fields"></div>
+
+            <!-- Form Actions -->
+            <div class="flex gap-3 pt-4">
+                <button type="submit"
+                        id="modal-submit"
+                        class="flex-1 text-white font-semibold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+                        style="background: linear-gradient(to right, #255F38, #1F7D53);">
+                    <span id="submit-text">Create</span>
+                </button>
+                <button type="button"
+                        id="modal-cancel"
+                        class="px-6 text-gray-400 font-semibold py-3 rounded-lg transition-all duration-300 hover:text-white"
+                        style="background-color: rgba(24, 35, 15, 0.5); border: 1px solid rgba(37, 95, 56, 0.3);">
+                    Cancel
+                </button>
+            </div>
+        </form>
+
+        <!-- Loading Spinner -->
+        <div id="modal-loading" class="hidden absolute inset-0 flex items-center justify-center rounded-2xl"
+             style="background-color: rgba(24, 35, 15, 0.9);">
+            <div class="text-center">
+                <div class="spinner mb-3"></div>
+                <p class="text-emerald-600 font-semibold">Processing...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .modal {
+        transition: opacity 0.3s ease;
+    }
+
+        .modal.show {
+            display: flex !important;
+            opacity: 1;
+        }
+
+    .animate-modal {
+        animation: modalSlideIn 0.3s ease-out;
+    }
+
+    @@keyframes modalSlideIn {
+        from {
+            transform: translateY(-20px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .spinner {
+        border: 4px solid rgba(31, 125, 83, 0.3);
+        border-top: 4px solid #1F7D53;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* Form field styles */
+    .form-field {
+        margin-bottom: 1rem;
+    }
+
+        .form-field label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #D1D5DB;
+        }
+
+            .form-field label .required {
+                color: #FCA5A5;
+                margin-left: 0.25rem;
+            }
+
+        .form-field input,
+        .form-field select,
+        .form-field textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            outline: none;
+            transition: border-color 0.2s;
+            background-color: #18230F;
+            border: 1px solid rgba(37, 95, 56, 0.5);
+            color: #FFFFFF;
+        }
+
+            .form-field input:focus,
+            .form-field select:focus,
+            .form-field textarea:focus {
+                border-color: #1F7D53;
+            }
+
+        .form-field textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-field .field-error {
+            color: #FCA5A5;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .form-field.error input,
+        .form-field.error select,
+        .form-field.error textarea {
+            border-color: #EF4444;
+        }
+
+        .form-field.error .field-error {
+            display: block;
+        }
+</style>

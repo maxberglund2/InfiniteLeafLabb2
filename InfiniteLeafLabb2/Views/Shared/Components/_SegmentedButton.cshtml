@@ -1,0 +1,83 @@
+﻿@model string
+@{
+    var activeSection = Model ?? "tables";
+    var sections = new[]
+    {
+        new { Id = "tables", Label = "Tables", Icon = "🪑" },
+        new { Id = "customers", Label = "Customers", Icon = "👥" },
+        new { Id = "reservations", Label = "Reservations", Icon = "📅" },
+        new { Id = "menu", Label = "Menu", Icon = "🍵" }
+    };
+}
+
+<div class="segmented-button-container mb-8">
+    <div class="flex flex-wrap gap-2 p-2 rounded-xl" style="background-color: rgba(24, 35, 15, 0.5); border: 1px solid rgba(37, 95, 56, 0.3);">
+        @foreach (var tab in sections)
+        {
+            <button class="segment-btn flex-1 min-w-[120px] px-6 py-3 rounded-lg font-semibold transition-all duration-300 @(tab.Id == activeSection ? "active" : "")"
+                    data-section="@tab.Id"
+                    onclick="switchTab(this)">
+                <span class="text-xl mr-2">@tab.Icon</span>
+                <span>@tab.Label</span>
+            </button>
+        }
+    </div>
+</div>
+
+<style>
+    .segment-btn {
+        color: #9CA3AF;
+        background-color: transparent;
+        border: 1px solid transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .segment-btn:hover:not(.active) {
+            color: #D1D5DB;
+            background-color: rgba(37, 95, 56, 0.2);
+        }
+
+        .segment-btn.active {
+            color: #FFFFFF;
+            background: linear-gradient(to right, #255F38, #1F7D53);
+            border-color: rgba(31, 125, 83, 0.5);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .segment-btn:active {
+            transform: scale(0.98);
+        }
+
+    /* Responsive adjustments */
+    @@media (max-width: 640px) {
+        .segment-btn {
+            min-width: 100px;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+            .segment-btn span:first-child {
+                margin-right: 0.25rem;
+            }
+    }
+</style>
+
+<script>
+    function switchTab(element) {
+        // Remove active class from all buttons
+        document.querySelectorAll('.segment-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        // Add active class to clicked button
+        element.classList.add('active');
+
+        // Optional: Get the ID for logic (API calls, showing/hiding divs)
+        const sectionId = element.getAttribute('data-section');
+        console.log("Switched to section:", sectionId);
+
+        // If you want to update the URL or trigger a partial reload, add that logic here
+    }
+</script>

@@ -3,41 +3,157 @@
     var username = ViewBag.Username ?? "Admin";
 }
 
-<div class="min-h-screen flex items-center justify-center px-4">
-    <div class="max-w-4xl w-full">
+<div class="min-h-screen px-4 py-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
         <div class="text-center mb-8">
             <div class="text-6xl mb-4">🍃</div>
             <h1 class="text-5xl font-bold mb-2" style="color: #FFFFFF;">Admin Dashboard</h1>
-            <p class="text-lg" style="color: #9CA3AF;">Welcome back, <span class="text-emerald-600 font-semibold">@username</span></p>
+            <p class="text-lg" style="color: #9CA3AF;">
+                Welcome back, <span class="text-emerald-600 font-semibold">@username</span>
+            </p>
+            <div class="mt-4">
+                <a href="@Url.Action("Logout", "Auth")"
+                   class="inline-block px-6 py-2 text-sm rounded-lg font-semibold transition-all duration-300 hover:scale-105"
+                   style="background: linear-gradient(to right, #DC2626, #B91C1C); color: white;">
+                    Logout
+                </a>
+            </div>
         </div>
 
-        <div class="rounded-2xl p-8" style="background-color: rgba(39, 57, 28, 0.4); border: 2px solid rgba(37, 95, 56, 0.3); backdrop-filter: blur(12px);">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="rounded-xl p-6 text-center" style="background-color: rgba(24, 35, 15, 0.5); border: 1px solid rgba(37, 95, 56, 0.2);">
-                    <div class="text-4xl mb-2">📊</div>
-                    <h3 class="font-bold text-lg mb-1" style="color: #1F7D53;">Analytics</h3>
-                    <p class="text-sm" style="color: #9CA3AF;">View statistics</p>
-                </div>
+        <!-- Main Dashboard Container -->
+        <div class="rounded-2xl p-8"
+             style="background-color: rgba(39, 57, 28, 0.4); border: 2px solid rgba(37, 95, 56, 0.3); backdrop-filter: blur(12px);">
 
-                <div class="rounded-xl p-6 text-center" style="background-color: rgba(24, 35, 15, 0.5); border: 1px solid rgba(37, 95, 56, 0.2);">
-                    <div class="text-4xl mb-2">🍵</div>
-                    <h3 class="font-bold text-lg mb-1" style="color: #1F7D53;">Menu</h3>
-                    <p class="text-sm" style="color: #9CA3AF;">Manage menu items</p>
-                </div>
+            <!-- Segmented Navigation -->
+            @await Html.PartialAsync("Components/_SegmentedButton", "tables")
 
-                <div class="rounded-xl p-6 text-center" style="background-color: rgba(24, 35, 15, 0.5); border: 1px solid rgba(37, 95, 56, 0.2);">
-                    <div class="text-4xl mb-2">📅</div>
-                    <h3 class="font-bold text-lg mb-1" style="color: #1F7D53;">Bookings</h3>
-                    <p class="text-sm" style="color: #9CA3AF;">View reservations</p>
+            <!-- Section: Tables -->
+            <div id="section-tables" class="section-content">
+                <div class="mb-4 flex justify-between items-center">
+                    <h2 class="text-2xl font-bold text-white">
+                        <span class="mr-2">🪑</span>Tables Management
+                    </h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="border-b border-jade">
+                            <tr>
+                                <th class="px-4 py-3 text-start text-sm font-semibold text-emerald-600">ID</th>
+                                <th class="px-4 py-3 text-start text-sm font-semibold text-emerald-600">Table Number</th>
+                                <th class="px-4 py-3 text-start text-sm font-semibold text-emerald-600">Capacity</th>
+                                <th class="px-4 py-3 text-end text-sm font-semibold text-emerald-600">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-moss">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <button class="create-btn px-6 py-3 rounded-lg text-white font-semibold transition-all hover:scale-105"
+                            style="background: linear-gradient(to right, #255F38, #1F7D53);"
+                            data-entity="tables">
+                        + Add New Table
+                    </button>
                 </div>
             </div>
 
-            <div class="text-center">
-                <a href="@Url.Action("Logout", "Auth")"
-                   class="inline-block px-8 py-3 text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
-                   style="background: linear-gradient(to right, #DC2626, #B91C1C);">
-                    Logout
-                </a>
+            <!-- Section: Customers -->
+            <div id="section-customers" class="section-content hidden">
+                <div class="mb-4 flex justify-between items-center">
+                    <h2 class="text-2xl font-bold text-white">
+                        <span class="mr-2">👥</span>Customers Management
+                    </h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="border-b border-jade">
+                            <tr>
+                                <th class="px-4 py-3 text-start text-sm font-semibold text-emerald-600">ID</th>
+                                <th class="px-4 py-3 text-start text-sm font-semibold text-emerald-600">Name</th>
+                                <th class="px-4 py-3 text-start text-sm font-semibold text-emerald-600">Phone Number</th>
+                                <th class="px-4 py-3 text-end text-sm font-semibold text-emerald-600">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-moss">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <button class="create-btn px-6 py-3 rounded-lg text-white font-semibold transition-all hover:scale-105"
+                            style="background: linear-gradient(to right, #255F38, #1F7D53);"
+                            data-entity="customers">
+                        + Add New Customer
+                    </button>
+                </div>
+            </div>
+
+            <!-- Section: Reservations -->
+            <div id="section-reservations" class="section-content hidden">
+                <div class="mb-4 flex justify-between items-center">
+                    <h2 class="text-2xl font-bold text-white">
+                        <span class="mr-2">📅</span>Reservations Management
+                    </h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="border-b border-jade">
+                            <tr>
+                                <th class="px-4 py-3 text-start text-sm font-semibold text-emerald-600">ID</th>
+                                <th class="px-4 py-3 text-start text-sm font-semibold text-emerald-600">Customer</th>
+                                <th class="px-4 py-3 text-start text-sm font-semibold text-emerald-600">Date & Time</th>
+                                <th class="px-4 py-3 text-start text-sm font-semibold text-emerald-600">Guests</th>
+                                <th class="px-4 py-3 text-start text-sm font-semibold text-emerald-600">Table</th>
+                                <th class="px-4 py-3 text-end text-sm font-semibold text-emerald-600">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-moss">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <button class="create-btn px-6 py-3 rounded-lg text-white font-semibold transition-all hover:scale-105"
+                            style="background: linear-gradient(to right, #255F38, #1F7D53);"
+                            data-entity="reservations">
+                        + Add New Reservation
+                    </button>
+                </div>
+            </div>
+
+            <!-- Section: Menu -->
+            <div id="section-menu" class="section-content hidden">
+                <div class="mb-4 flex justify-between items-center">
+                    <h2 class="text-2xl font-bold text-white">
+                        <span class="mr-2">🍵</span>Menu Management
+                    </h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="border-b border-jade">
+                            <tr>
+                                <th class="px-4 py-3 text-start text-sm font-semibold text-emerald-600">ID</th>
+                                <th class="px-4 py-3 text-start text-sm font-semibold text-emerald-600">Name</th>
+                                <th class="px-4 py-3 text-start text-sm font-semibold text-emerald-600">Price</th>
+                                <th class="px-4 py-3 text-start text-sm font-semibold text-emerald-600">Description</th>
+                                <th class="px-4 py-3 text-start text-sm font-semibold text-emerald-600">Popular</th>
+                                <th class="px-4 py-3 text-end text-sm font-semibold text-emerald-600">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-moss">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <button class="create-btn px-6 py-3 rounded-lg text-white font-semibold transition-all hover:scale-105"
+                            style="background: linear-gradient(to right, #255F38, #1F7D53);"
+                            data-entity="menu">
+                        + Add New Menu Item
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -53,3 +169,13 @@
         }
     </div>
 </div>
+
+<!-- Modals -->
+@await Html.PartialAsync("Components/_Modal")
+@await Html.PartialAsync("Components/_DeleteConfirmModal")
+
+@section Scripts {
+    <script src="~/js/api-client.js"></script>
+    <script src="~/js/modal-handler.js"></script>
+    <script src="~/js/admin-dashboard.js"></script>
+}

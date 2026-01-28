@@ -35,6 +35,8 @@ namespace InfiniteLeafLabb2
             // Register application services
             builder.Services.AddScoped<MenuService>();
             builder.Services.AddScoped<ReservationService>();
+            builder.Services.AddScoped<TableService>();
+            builder.Services.AddScoped<CustomerService>();
 
             var app = builder.Build();
 

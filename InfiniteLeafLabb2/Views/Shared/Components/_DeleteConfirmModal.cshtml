@@ -1,0 +1,62 @@
+﻿<div id="delete-confirm-modal" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4" style="background-color: rgba(0, 0, 0, 0.7);">
+    <div class="modal-content rounded-2xl shadow-2xl w-full max-w-md p-8 animate-modal"
+         style="background-color: rgba(39, 57, 28, 0.95); border: 2px solid rgba(239, 68, 68, 0.5); backdrop-filter: blur(12px);">
+
+        <!-- Warning Icon -->
+        <div class="text-center mb-4">
+            <div class="text-6xl mb-2">⚠️</div>
+            <h3 class="text-2xl font-bold text-white">Confirm Delete</h3>
+        </div>
+
+        <!-- Message -->
+        <p class="text-center mb-6" style="color: #D1D5DB;" id="delete-message">
+            Are you sure you want to delete this item? This action cannot be undone.
+        </p>
+
+        <!-- Item Details (optional) -->
+        <div id="delete-details" class="mb-6 p-4 rounded-lg" style="background-color: rgba(24, 35, 15, 0.5); border: 1px solid rgba(37, 95, 56, 0.2);">
+            <!-- Details will be injected here -->
+        </div>
+
+        <!-- Actions -->
+        <div class="flex gap-3">
+            <button type="button"
+                    id="delete-cancel"
+                    class="flex-1 px-6 text-white font-semibold py-3 rounded-lg transition-all duration-300 hover:scale-105"
+                    style="background-color: rgba(24, 35, 15, 0.5); border: 1px solid rgba(37, 95, 56, 0.5);">
+                Cancel
+            </button>
+            <button type="button"
+                    id="delete-confirm"
+                    class="flex-1 text-white font-semibold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+                    style="background: linear-gradient(to right, #DC2626, #B91C1C);">
+                Delete
+            </button>
+        </div>
+
+        <!-- Loading State -->
+        <div id="delete-loading" class="hidden absolute inset-0 flex items-center justify-center rounded-2xl"
+             style="background-color: rgba(24, 35, 15, 0.9);">
+            <div class="text-center">
+                <div class="spinner mb-3"></div>
+                <p class="text-red-500 font-semibold">Deleting...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #delete-confirm-modal .spinner {
+        border: 4px solid rgba(239, 68, 68, 0.3);
+        border-top: 4px solid #EF4444;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+    }
+
+    #delete-details:empty {
+        display: none;
+    }
+</style>
