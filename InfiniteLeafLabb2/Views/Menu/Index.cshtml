@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Menu";
-    var menuItems = ViewBag.MenuItems as List<InfiniteLeafLabb2.Models.DTOs.MenuItemDto>;
+    var menuItems = ViewBag.MenuItems as List<InfiniteLeafLabb2.Models.DTOs.MenuItemDto> ?? new List<InfiniteLeafLabb2.Models.DTOs.MenuItemDto>();
 }
 
 <!-- Menu Page Header -->
@@ -17,9 +17,9 @@
 </section>
 
 <!-- Search and Filter Section -->
-<section class="py-8 px-4">
+<section class="p-4">
     <div class="max-w-7xl mx-auto">
-        <div class="rounded-2xl p-6 mb-8"
+        <div class="rounded-2xl p-6"
              style="background-color: rgba(39, 57, 28, 0.4); border: 2px solid rgba(37, 95, 56, 0.3); backdrop-filter: blur(12px);">
 
             <!-- Search Bar -->
@@ -56,14 +56,8 @@
 </section>
 
 <!-- Menu Items Grid -->
-<section class="py-8 px-4">
+<section class="p-4">
     <div class="max-w-7xl mx-auto">
-        <!-- Loading State -->
-        <div id="loading-state" class="text-center py-20">
-            <div class="inline-block animate-spin text-6xl mb-4">🍃</div>
-            <p class="text-xl text-gray-400">Loading our tea collection...</p>
-        </div>
-
         <!-- Empty State -->
         <div id="empty-state" class="hidden text-center py-20 rounded-2xl"
              style="background-color: rgba(39, 57, 28, 0.4); border: 2px solid rgba(37, 95, 56, 0.3);">
@@ -74,7 +68,70 @@
 
         <!-- Menu Items Container -->
         <div id="menu-items-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Items will be dynamically loaded here -->
+            @if (menuItems.Any())
+            {
+                @foreach (var item in menuItems)
+                {
+                    <div class="menu-item-card rounded-2xl p-6 transition-all duration-300 hover:scale-105 group"
+                         data-name="@item.Name.ToLower()"
+                         data-description="@item.Description.ToLower()"
+                         data-popular="@item.IsPopular.ToString().ToLower()"
+                         style="background-color: rgba(39, 57, 28, 0.4); border: 2px solid rgba(37, 95, 56, 0.3); backdrop-filter: blur(12px);">
+
+                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                        {
+                            <div class="mb-4 rounded-xl overflow-hidden h-48 bg-moss">
+                                <img src="@item.ImageUrl"
+                                     alt="@item.Name"
+                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                                <div style="display: none; height: 100%; align-items: center; justify-content: center; font-size: 4rem;">
+                                    🍵
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="mb-4 rounded-xl h-48 bg-moss flex items-center justify-center text-6xl">
+                                🍵
+                            </div>
+                        }
+
+                        <div class="flex items-start justify-between mb-3">
+                            <h3 class="text-xl font-bold text-emerald-400 flex-1">
+                                @item.Name
+                            </h3>
+                            <span class="text-2xl font-bold text-emerald-500 ml-4">
+                                $@item.Price.ToString("0.00")
+                            </span>
+                        </div>
+
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                            @item.Description
+                        </p>
+
+                        <div class="flex items-center gap-2">
+                            @if (item.IsPopular)
+                            {
+                                <span class="px-3 py-1 rounded-full text-xs font-semibold"
+                                      style="background: linear-gradient(to right, rgba(37, 95, 56, 0.5), rgba(31, 125, 83, 0.5)); color: #6EE7B7;">
+                                    ⭐ Popular
+                                </span>
+                            }
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-span-full text-center py-20 rounded-2xl"
+                     style="background-color: rgba(39, 57, 28, 0.4); border: 2px solid rgba(37, 95, 56, 0.3);">
+                    <div class="text-6xl mb-4">🍵</div>
+                    <p class="text-xl text-gray-400">
+                        Our menu is being curated. Check back soon!
+                    </p>
+                </div>
+            }
         </div>
     </div>
 </section>
@@ -83,38 +140,9 @@
     <script>
         class MenuPage {
             constructor() {
-                this.allItems = [];
-                this.filteredItems = [];
                 this.currentFilter = 'all';
                 this.searchQuery = '';
-
-                this.init();
-            }
-
-            async init() {
-                await this.loadMenuItems();
                 this.attachEventListeners();
-                this.renderItems();
-            }
-
-            async loadMenuItems() {
-                try {
-                    const response = await fetch('/MenuItems/GetAll');
-                    if (response.ok) {
-                        this.allItems = await response.json();
-                        this.filteredItems = this.allItems;
-                    } else {
-                        console.error('Failed to load menu items');
-                        this.allItems = [];
-                        this.filteredItems = [];
-                    }
-                } catch (error) {
-                    console.error('Error loading menu items:', error);
-                    this.allItems = [];
-                    this.filteredItems = [];
-                } finally {
-                    document.getElementById('loading-state').style.display = 'none';
-                }
             }
 
             attachEventListeners() {
@@ -147,85 +175,42 @@
             }
 
             applyFilters() {
-                let items = this.allItems;
-
-                // Apply filter
-                if (this.currentFilter === 'popular') {
-                    items = items.filter(item => item.isPopular);
-                }
-
-                // Apply search
-                if (this.searchQuery) {
-                    items = items.filter(item =>
-                        item.name.toLowerCase().includes(this.searchQuery) ||
-                        item.description.toLowerCase().includes(this.searchQuery)
-                    );
-                }
-
-                this.filteredItems = items;
-                this.renderItems();
-            }
-
-            renderItems() {
-                const container = document.getElementById('menu-items-container');
+                const cards = document.querySelectorAll('.menu-item-card');
                 const emptyState = document.getElementById('empty-state');
+                let visibleCount = 0;
 
-                if (this.filteredItems.length === 0) {
-                    container.innerHTML = '';
+                cards.forEach(card => {
+                    const name = card.dataset.name || '';
+                    const description = card.dataset.description || '';
+                    const isPopular = card.dataset.popular === 'true';
+
+                    // Apply filter
+                    let matchesFilter = true;
+                    if (this.currentFilter === 'popular') {
+                        matchesFilter = isPopular;
+                    }
+
+                    // Apply search
+                    let matchesSearch = true;
+                    if (this.searchQuery) {
+                        matchesSearch = name.includes(this.searchQuery) || description.includes(this.searchQuery);
+                    }
+
+                    // Show/hide card
+                    if (matchesFilter && matchesSearch) {
+                        card.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // Show/hide empty state
+                if (visibleCount === 0) {
                     emptyState.classList.remove('hidden');
-                    return;
+                } else {
+                    emptyState.classList.add('hidden');
                 }
-
-                emptyState.classList.add('hidden');
-                container.innerHTML = this.filteredItems.map(item => this.createItemCard(item)).join('');
-            }
-
-            createItemCard(item) {
-                const imageSection = item.imageUrl
-                    ? `<div class="mb-4 rounded-xl overflow-hidden h-48 bg-moss">
-                           <img src="${item.imageUrl}"
-                                alt="${item.name}"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                           <div style="display: none; height: 100%; align-items: center; justify-content: center; font-size: 4rem;">
-                               🍵
-                           </div>
-                       </div>`
-                    : `<div class="mb-4 rounded-xl h-48 bg-moss flex items-center justify-center text-6xl">
-                           🍵
-                       </div>`;
-
-                const popularBadge = item.isPopular
-                    ? `<span class="px-3 py-1 rounded-full text-xs font-semibold"
-                             style="background: linear-gradient(to right, rgba(37, 95, 56, 0.5), rgba(31, 125, 83, 0.5)); color: #6EE7B7;">
-                            ⭐ Popular
-                        </span>`
-                    : '';
-
-                return `
-                    <div class="menu-item-card rounded-2xl p-6 transition-all duration-300 hover:scale-105 group"
-                         style="background-color: rgba(39, 57, 28, 0.4); border: 2px solid rgba(37, 95, 56, 0.3); backdrop-filter: blur(12px);">
-
-                        ${imageSection}
-
-                        <div class="flex items-start justify-between mb-3">
-                            <h3 class="text-xl font-bold text-emerald-400 flex-1">
-                                ${item.name}
-                            </h3>
-                            <span class="text-2xl font-bold text-emerald-500 ml-4">
-                                $${item.price.toFixed(2)}
-                            </span>
-                        </div>
-
-                        <p class="text-gray-400 text-sm leading-relaxed mb-4">
-                            ${item.description}
-                        </p>
-
-                        <div class="flex items-center gap-2">
-                            ${popularBadge}
-                        </div>
-                    </div>
-                `;
             }
         }
 
@@ -262,35 +247,30 @@
             border-color: #1F7D53;
         }
 
-        .animate-spin {
-            animation: spin 2s linear infinite;
-        }
-
-        @@keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
         /* Smooth card appearance */
         .menu-item-card {
             animation: fadeInUp 0.5s ease-out;
         }
 
-        @@keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
+        /* Add smooth gradient animation */
+        @@keyframes gradient {
+            0% {
+                background-position: 0% 50%;
             }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
             }
         }
+
+        .bg-clip-text {
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+        
     </style>
 }
