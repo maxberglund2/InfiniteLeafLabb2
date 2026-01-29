@@ -3,22 +3,55 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Infinite Leaf</title>
+
+    <!-- SEO Meta Tags -->
+    <title>@ViewData["Title"] - Infinite Leaf Tea Café | Premium Tea Experience</title>
+    <meta name="description" content="@(ViewData["Description"] ?? "Experience the art of tea at Infinite Leaf. Premium organic teas, expert craftsmanship, and a tranquil ambiance. Reserve your table today.")" />
+    <meta name="keywords" content="tea café, premium tea, organic tea, tea lounge, reservation, tea menu, @(ViewData["Keywords"] ?? "")" />
+    <meta name="author" content="Infinite Leaf Tea Café" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="@(Context.Request.Scheme)://@(Context.Request.Host)@(Context.Request.Path)" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="~/favicon.png" />
+    <link rel="apple-touch-icon" href="~/apple-touch-icon.png" />
+
+    <!-- Preconnect to improve performance -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" />
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/leaf.css" />
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Structured Data (JSON-LD) for rich snippets -->
+    <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "Restaurant",
+            "name": "Infinite Leaf Tea Café",
+            "description": "Premium organic tea café with expert-crafted blends and tranquil ambiance",
+            "url": "@(Context.Request.Scheme)://@(Context.Request.Host)",
+            "logo": "@(Context.Request.Scheme)://@(Context.Request.Host)/images/logo.png",
+            "servesCuisine": "Tea, Beverages",
+            "priceRange": "$$",
+            "acceptsReservations": "True"
+        }
+    </script>
 </head>
 <body class="flex bg-dark-forest flex-col min-h-screen text-white">
 
     <header class="bg-moss shadow-lg border-b border-jade" style="backdrop-filter: blur(10px);">
-        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" role="navigation" aria-label="Main navigation">
             <div class="flex justify-between h-20 items-center">
                 <!-- Logo/Brand -->
                 <div class="flex-shrink-0 flex items-center gap-3">
-                    <div class="text-3xl">🍃</div>
+                    <div class="text-3xl" aria-hidden="true">🍃</div>
                     <a class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-emerald-600 bg-clip-text text-transparent hover:scale-105 transition-transform"
                        asp-area="" asp-controller="Home" asp-action="Index"
-                       style="font-family: 'Georgia', serif;">
+                       style="font-family: 'Georgia', serif;"
+                       aria-label="Infinite Leaf Tea Café Home">
                         Infinite Leaf
                     </a>
                 </div>
@@ -26,36 +59,42 @@
                 <!-- Desktop Navigation -->
                 <div class="hidden md:flex md:items-center md:gap-2">
                     <a asp-controller="Home" asp-action="Index"
-                       class="nav-link px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 text-gray-300 hover:text-white hover:bg-jade">
+                       class="nav-link px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 text-gray-300 hover:text-white hover:bg-jade"
+                       aria-label="Home page">
                         🏠 Home
                     </a>
                     <a asp-controller="Menu" asp-action="Index"
-                       class="nav-link px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 text-gray-300 hover:text-white hover:bg-jade">
+                       class="nav-link px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 text-gray-300 hover:text-white hover:bg-jade"
+                       aria-label="View our tea menu">
                         🍵 Menu
                     </a>
                     <a asp-controller="Booking" asp-action="Index"
-                       class="block px-4 py-3 rounded-lg text-base font-semibold text-gray-300 hover:text-white hover:bg-jade transition-colors">
+                       class="block px-4 py-3 rounded-lg text-base font-semibold text-gray-300 hover:text-white hover:bg-jade transition-colors"
+                       aria-label="Book a table">
                         📅 Book Table
                     </a>
 
                     @if (Context.Session.GetString("IsAdmin") == "true")
                     {
-                        <div class="h-6 w-px bg-jade mx-2"></div>
+                        <div class="h-6 w-px bg-jade mx-2" aria-hidden="true"></div>
                         <a asp-controller="Admin" asp-action="Index"
-                           class="nav-link px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 text-emerald-400 hover:text-emerald-300 hover:bg-jade">
+                           class="nav-link px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 text-emerald-400 hover:text-emerald-300 hover:bg-jade"
+                           aria-label="Admin dashboard">
                             ⚙️ Admin
                         </a>
                         <a asp-controller="Auth" asp-action="Logout"
-                           class="nav-link px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 text-red-400 hover:text-red-300 hover:bg-red-900/20">
+                           class="nav-link px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 text-red-400 hover:text-red-300 hover:bg-red-900/20"
+                           aria-label="Logout">
                             🚪 Logout
                         </a>
                     }
                     else
                     {
-                        <div class="h-6 w-px bg-jade mx-2"></div>
+                        <div class="h-6 w-px bg-jade mx-2" aria-hidden="true"></div>
                         <a asp-controller="Auth" asp-action="Index"
                            class="px-5 py-2 rounded-lg text-sm font-bold transition-all duration-300 transform hover:scale-105 shadow-lg text-white"
-                           style="background: linear-gradient(to right, #255F38, #1F7D53);">
+                           style="background: linear-gradient(to right, #255F38, #1F7D53);"
+                           aria-label="Admin login">
                             🔐 Admin Login
                         </a>
                     }
@@ -67,9 +106,10 @@
                             id="mobile-menu-button"
                             class="inline-flex items-center justify-center p-2 rounded-lg text-gray-400 hover:text-white hover:bg-jade focus:outline-none transition-colors"
                             aria-controls="mobile-menu"
-                            aria-expanded="false">
+                            aria-expanded="false"
+                            aria-label="Toggle mobile menu">
                         <span class="sr-only">Open main menu</span>
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
@@ -80,36 +120,42 @@
             <div class="md:hidden hidden" id="mobile-menu">
                 <div class="px-2 pt-2 pb-3 space-y-1 bg-dark-forest rounded-lg mt-2 border border-jade">
                     <a asp-controller="Home" asp-action="Index"
-                       class="block px-4 py-3 rounded-lg text-base font-semibold text-gray-300 hover:text-white hover:bg-jade transition-colors">
+                       class="block px-4 py-3 rounded-lg text-base font-semibold text-gray-300 hover:text-white hover:bg-jade transition-colors"
+                       aria-label="Home page">
                         🏠 Home
                     </a>
-                    <a href="#menu-section"
-                       class="block px-4 py-3 rounded-lg text-base font-semibold text-gray-300 hover:text-white hover:bg-jade transition-colors">
+                    <a asp-controller="Menu" asp-action="Index"
+                       class="block px-4 py-3 rounded-lg text-base font-semibold text-gray-300 hover:text-white hover:bg-jade transition-colors"
+                       aria-label="View our tea menu">
                         🍵 Menu
                     </a>
-                    <a href="#tables-section"
-                       class="block px-4 py-3 rounded-lg text-base font-semibold text-gray-300 hover:text-white hover:bg-jade transition-colors">
-                        🪑 Tables
+                    <a asp-controller="Booking" asp-action="Index"
+                       class="block px-4 py-3 rounded-lg text-base font-semibold text-gray-300 hover:text-white hover:bg-jade transition-colors"
+                       aria-label="Book a table">
+                        📅 Book Table
                     </a>
 
                     @if (Context.Session.GetString("IsAdmin") == "true")
                     {
-                        <div class="h-px bg-jade my-2"></div>
+                        <div class="h-px bg-jade my-2" aria-hidden="true"></div>
                         <a asp-controller="Admin" asp-action="Index"
-                           class="block px-4 py-3 rounded-lg text-base font-semibold text-emerald-400 hover:text-emerald-300 hover:bg-jade transition-colors">
+                           class="block px-4 py-3 rounded-lg text-base font-semibold text-emerald-400 hover:text-emerald-300 hover:bg-jade transition-colors"
+                           aria-label="Admin dashboard">
                             ⚙️ Admin Dashboard
                         </a>
                         <a asp-controller="Auth" asp-action="Logout"
-                           class="block px-4 py-3 rounded-lg text-base font-semibold text-red-400 hover:text-red-300 hover:bg-red-900/20 transition-colors">
+                           class="block px-4 py-3 rounded-lg text-base font-semibold text-red-400 hover:text-red-300 hover:bg-red-900/20 transition-colors"
+                           aria-label="Logout">
                             🚪 Logout
                         </a>
                     }
                     else
                     {
-                        <div class="h-px bg-jade my-2"></div>
+                        <div class="h-px bg-jade my-2" aria-hidden="true"></div>
                         <a asp-controller="Auth" asp-action="Index"
                            class="block px-4 py-3 rounded-lg text-base font-bold text-white text-center"
-                           style="background: linear-gradient(to right, #255F38, #1F7D53);">
+                           style="background: linear-gradient(to right, #255F38, #1F7D53);"
+                           aria-label="Admin login">
                             🔐 Admin Login
                         </a>
                     }
@@ -119,14 +165,14 @@
     </header>
 
     <div class="flex-grow">
-        <main role="main">
+        <main role="main" id="main-content">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="bg-moss py-8 border-t border-jade">
+    <footer class="bg-moss py-8 border-t border-jade" role="contentinfo">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <div class="mb-4">
+            <div class="mb-4" aria-hidden="true">
                 <span class="text-3xl">🍃</span>
             </div>
             <p class="text-sm text-gray-400">
@@ -145,6 +191,8 @@
         // Mobile menu toggle
         document.getElementById('mobile-menu-button')?.addEventListener('click', function() {
             const menu = document.getElementById('mobile-menu');
+            const expanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', !expanded);
             menu.classList.toggle('hidden');
         });
 
@@ -155,6 +203,7 @@
 
             if (!menu?.contains(event.target) && !button?.contains(event.target)) {
                 menu?.classList.add('hidden');
+                button?.setAttribute('aria-expanded', 'false');
             }
         });
 
@@ -169,6 +218,7 @@
                         element.scrollIntoView({ behavior: 'smooth' });
                         // Close mobile menu after clicking
                         document.getElementById('mobile-menu')?.classList.add('hidden');
+                        document.getElementById('mobile-menu-button')?.setAttribute('aria-expanded', 'false');
                     }
                 }
             });
