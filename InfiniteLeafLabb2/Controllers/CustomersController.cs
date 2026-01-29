@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InfiniteLeafLabb2.Controllers
 {
-    [RequireAuthentication]
     public class CustomersController : Controller
     {
         private readonly CustomerService _customerService;
@@ -14,6 +13,7 @@ namespace InfiniteLeafLabb2.Controllers
             _customerService = customerService;
         }
 
+        [RequireAuthentication]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -21,6 +21,7 @@ namespace InfiniteLeafLabb2.Controllers
             return Json(customers);
         }
 
+        [RequireAuthentication]
         [HttpGet]
         public async Task<IActionResult> GetById(int id)
         {
@@ -43,6 +44,7 @@ namespace InfiniteLeafLabb2.Controllers
             return Json(result);
         }
 
+        [RequireAuthentication]
         [HttpPut]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateCustomerDto dto)
         {
@@ -56,6 +58,7 @@ namespace InfiniteLeafLabb2.Controllers
             return Json(result);
         }
 
+        [RequireAuthentication]
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {

@@ -54,8 +54,16 @@
     validateStep(step) {
         switch (step) {
             case 1:
-                const date = document.getElementById('booking-date').value;
-                const time = document.getElementById('booking-time').value;
+                const dateField = document.getElementById('booking-date');
+                const timeField = document.getElementById('booking-time');
+
+                if (!dateField || !timeField) {
+                    this.showError('Form fields not found');
+                    return false;
+                }
+
+                const date = dateField.value;
+                const time = timeField.value;
 
                 if (!date || !time) {
                     this.showError('Please select both date and time');
@@ -81,8 +89,16 @@
                 return true;
 
             case 4:
-                const name = document.getElementById('customer-name').value.trim();
-                const phone = document.getElementById('customer-phone').value.trim();
+                const nameField = document.getElementById('customer-name');
+                const phoneField = document.getElementById('customer-phone');
+
+                if (!nameField || !phoneField) {
+                    this.showError('Form fields not found');
+                    return false;
+                }
+
+                const name = nameField.value.trim();
+                const phone = phoneField.value.trim();
 
                 if (!name || name.length < 2) {
                     this.showError('Please enter your full name');
@@ -96,7 +112,9 @@
 
                 this.bookingData.customerName = name;
                 this.bookingData.customerPhone = phone;
-                this.bookingData.specialRequests = document.getElementById('special-requests').value.trim();
+
+                const specialRequestsField = document.getElementById('special-requests');
+                this.bookingData.specialRequests = specialRequestsField ? specialRequestsField.value.trim() : '';
                 return true;
 
             case 5:
@@ -182,27 +200,28 @@
         noTables.classList.add('hidden');
 
         try {
-            // Combine date and time
+            // Combine date and time to create DateTime
             const dateTime = `${this.bookingData.date}T${this.bookingData.time}:00`;
+            const startTime = new Date(dateTime);
 
-            // Fetch available tables from API
-            const response = await apiClient.get(
-                `/Tables/GetAll`
+            // Format for URL - using ISO string
+            const formattedDateTime = startTime.toISOString();
+
+            // Fetch available tables from the PUBLIC endpoint (no auth required)
+            const response = await fetch(
+                `/Tables/GetAvailable?startTime=${encodeURIComponent(formattedDateTime)}&numberOfGuests=${this.bookingData.guests}`
             );
-
-            if (!response.success) {
-                throw new Error('Failed to fetch available tables');
-            }
-
-            const allTables = response.data || [];
 
             // Hide loading
             tablesLoading.classList.add('hidden');
 
-            // Filter tables based on capacity and availability
-            const suitableTables = allTables.filter(table => table.capacity >= this.bookingData.guests);
+            if (!response.ok) {
+                throw new Error('Failed to fetch available tables');
+            }
 
-            if (suitableTables.length === 0) {
+            const suitableTables = await response.json();
+
+            if (!Array.isArray(suitableTables) || suitableTables.length === 0) {
                 noTables.classList.remove('hidden');
                 return;
             }
@@ -282,33 +301,45 @@
         confirmBtn.innerHTML = '<span class="spinner" style="width: 24px; height: 24px; display: inline-block; margin-right: 8px;"></span> Processing...';
 
         try {
-            // First, create or get customer
-            const customerResult = await apiClient.createCustomer({
-                name: this.bookingData.customerName,
-                phoneNumber: this.bookingData.customerPhone
+            // First, create or get customer (using direct fetch since apiClient might require auth)
+            const customerResponse = await fetch('/Customers/Create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: this.bookingData.customerName,
+                    phoneNumber: this.bookingData.customerPhone
+                })
             });
 
-            if (!customerResult.success) {
+            if (!customerResponse.ok) {
                 throw new Error('Failed to create customer');
             }
 
-            const customer = customerResult.data;
+            const customer = await customerResponse.json();
 
             // Create reservation
             const dateTime = `${this.bookingData.date}T${this.bookingData.time}:00`;
 
-            const reservationResult = await apiClient.createReservation({
-                startTime: dateTime,
-                numberOfGuests: this.bookingData.guests,
-                cafeTableId: this.bookingData.tableId,
-                customerId: customer.id
+            const reservationResponse = await fetch('/Reservations/Create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    startTime: dateTime,
+                    numberOfGuests: this.bookingData.guests,
+                    cafeTableId: this.bookingData.tableId,
+                    customerId: customer.id
+                })
             });
 
-            if (!reservationResult.success) {
+            if (!reservationResponse.ok) {
                 throw new Error('Failed to create reservation');
             }
 
-            const reservation = reservationResult.data;
+            const reservation = await reservationResponse.json();
 
             // Show success
             this.showSuccess(reservation);

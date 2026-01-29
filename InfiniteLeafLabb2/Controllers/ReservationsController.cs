@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InfiniteLeafLabb2.Controllers
 {
-    [RequireAuthentication]
     public class ReservationsController : Controller
     {
         private readonly ReservationService _reservationService;
@@ -15,6 +14,7 @@ namespace InfiniteLeafLabb2.Controllers
             _reservationService = reservationService;
         }
 
+        [RequireAuthentication]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -22,6 +22,7 @@ namespace InfiniteLeafLabb2.Controllers
             return Json(reservations);
         }
 
+        [RequireAuthentication]
         [HttpGet]
         public async Task<IActionResult> GetById(int id)
         {
@@ -31,6 +32,7 @@ namespace InfiniteLeafLabb2.Controllers
             return Json(reservation);
         }
 
+        // Public endpoint - allows reservation creation during booking (no auth required)
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateReservationDto dto)
         {
@@ -44,6 +46,7 @@ namespace InfiniteLeafLabb2.Controllers
             return Json(result);
         }
 
+        [RequireAuthentication]
         [HttpPut]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateReservationDto dto)
         {
@@ -57,6 +60,7 @@ namespace InfiniteLeafLabb2.Controllers
             return Json(result);
         }
 
+        [RequireAuthentication]
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {

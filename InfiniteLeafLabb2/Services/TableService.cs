@@ -21,6 +21,14 @@ namespace InfiniteLeafLabb2.Services
             return await _apiService.GetAsync<CafeTableDto>($"api/cafetables/{id}");
         }
 
+        // New method to get available tables for booking (no auth required)
+        public async Task<List<CafeTableDto>?> GetAvailableTablesAsync(DateTime startTime, int numberOfGuests)
+        {
+            var formattedDateTime = startTime.ToString("yyyy-MM-ddTHH:mm:ss");
+            return await _apiService.GetAsync<List<CafeTableDto>>(
+                $"api/cafetables/available?startTime={Uri.EscapeDataString(formattedDateTime)}&numberOfGuests={numberOfGuests}");
+        }
+
         public async Task<CafeTableDto?> CreateTableAsync(CreateTableDto table)
         {
             return await _apiService.PostAsync<CreateTableDto, CafeTableDto>("api/cafetables", table);

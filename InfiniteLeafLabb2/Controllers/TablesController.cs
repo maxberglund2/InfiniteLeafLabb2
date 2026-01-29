@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InfiniteLeafLabb2.Controllers
 {
-    [RequireAuthentication]
     public class TablesController : Controller
     {
         private readonly TableService _tableService;
@@ -14,6 +13,7 @@ namespace InfiniteLeafLabb2.Controllers
             _tableService = tableService;
         }
 
+        [RequireAuthentication]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -21,6 +21,7 @@ namespace InfiniteLeafLabb2.Controllers
             return Json(tables);
         }
 
+        [RequireAuthentication]
         [HttpGet]
         public async Task<IActionResult> GetById(int id)
         {
@@ -30,6 +31,15 @@ namespace InfiniteLeafLabb2.Controllers
             return Json(table);
         }
 
+        // Public endpoint for checking available tables (no auth required)
+        [HttpGet]
+        public async Task<IActionResult> GetAvailable(DateTime startTime, int numberOfGuests)
+        {
+            var availableTables = await _tableService.GetAvailableTablesAsync(startTime, numberOfGuests);
+            return Json(availableTables);
+        }
+
+        [RequireAuthentication]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateTableDto dto)
         {
@@ -43,6 +53,7 @@ namespace InfiniteLeafLabb2.Controllers
             return Json(result);
         }
 
+        [RequireAuthentication]
         [HttpPut]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateTableDto dto)
         {
@@ -56,6 +67,7 @@ namespace InfiniteLeafLabb2.Controllers
             return Json(result);
         }
 
+        [RequireAuthentication]
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
