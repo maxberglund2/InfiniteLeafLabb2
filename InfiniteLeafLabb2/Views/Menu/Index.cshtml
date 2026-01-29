@@ -1,0 +1,296 @@
+﻿@{
+    ViewData["Title"] = "Menu";
+    var menuItems = ViewBag.MenuItems as List<InfiniteLeafLabb2.Models.DTOs.MenuItemDto>;
+}
+
+<!-- Menu Page Header -->
+<section class="py-12 px-4">
+    <div class="max-w-7xl mx-auto text-center">
+        <div class="text-6xl mb-4">🍵</div>
+        <h1 class="text-5xl md:text-6xl font-bold text-white mb-4">
+            Our Tea Collection
+        </h1>
+        <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+            Explore our carefully curated selection of premium teas from around the world
+        </p>
+    </div>
+</section>
+
+<!-- Search and Filter Section -->
+<section class="py-8 px-4">
+    <div class="max-w-7xl mx-auto">
+        <div class="rounded-2xl p-6 mb-8"
+             style="background-color: rgba(39, 57, 28, 0.4); border: 2px solid rgba(37, 95, 56, 0.3); backdrop-filter: blur(12px);">
+
+            <!-- Search Bar -->
+            <div class="mb-6">
+                <div class="relative max-w-2xl mx-auto">
+                    <input type="text"
+                           id="search-input"
+                           placeholder="Search for your favorite tea..."
+                           class="w-full px-6 py-4 pr-12 rounded-xl text-lg transition-all duration-300 focus:ring-2 focus:ring-emerald-500 outline-none"
+                           style="background-color: #18230F; border: 1px solid rgba(37, 95, 56, 0.5); color: #FFFFFF;">
+                    <div class="absolute right-4 top-1/2 transform -translate-y-1/2 text-2xl text-emerald-500">
+                        🔍
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap gap-3 justify-center">
+                <button id="btn-all"
+                        class="filter-btn active px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
+                        data-filter="all">
+                    <span class="mr-2">📋</span>
+                    All Items
+                </button>
+                <button id="btn-popular"
+                        class="filter-btn px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
+                        data-filter="popular">
+                    <span class="mr-2">⭐</span>
+                    Popular Items
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Menu Items Grid -->
+<section class="py-8 px-4">
+    <div class="max-w-7xl mx-auto">
+        <!-- Loading State -->
+        <div id="loading-state" class="text-center py-20">
+            <div class="inline-block animate-spin text-6xl mb-4">🍃</div>
+            <p class="text-xl text-gray-400">Loading our tea collection...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="hidden text-center py-20 rounded-2xl"
+             style="background-color: rgba(39, 57, 28, 0.4); border: 2px solid rgba(37, 95, 56, 0.3);">
+            <div class="text-6xl mb-4">🔍</div>
+            <p class="text-xl text-gray-400 mb-2">No items found</p>
+            <p class="text-gray-500">Try adjusting your search or filter</p>
+        </div>
+
+        <!-- Menu Items Container -->
+        <div id="menu-items-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Items will be dynamically loaded here -->
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        class MenuPage {
+            constructor() {
+                this.allItems = [];
+                this.filteredItems = [];
+                this.currentFilter = 'all';
+                this.searchQuery = '';
+
+                this.init();
+            }
+
+            async init() {
+                await this.loadMenuItems();
+                this.attachEventListeners();
+                this.renderItems();
+            }
+
+            async loadMenuItems() {
+                try {
+                    const response = await fetch('/MenuItems/GetAll');
+                    if (response.ok) {
+                        this.allItems = await response.json();
+                        this.filteredItems = this.allItems;
+                    } else {
+                        console.error('Failed to load menu items');
+                        this.allItems = [];
+                        this.filteredItems = [];
+                    }
+                } catch (error) {
+                    console.error('Error loading menu items:', error);
+                    this.allItems = [];
+                    this.filteredItems = [];
+                } finally {
+                    document.getElementById('loading-state').style.display = 'none';
+                }
+            }
+
+            attachEventListeners() {
+                // Filter buttons
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const filter = e.currentTarget.dataset.filter;
+                        this.setFilter(filter);
+                    });
+                });
+
+                // Search input
+                const searchInput = document.getElementById('search-input');
+                searchInput.addEventListener('input', (e) => {
+                    this.searchQuery = e.target.value.toLowerCase();
+                    this.applyFilters();
+                });
+            }
+
+            setFilter(filter) {
+                this.currentFilter = filter;
+
+                // Update active button
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
+
+                this.applyFilters();
+            }
+
+            applyFilters() {
+                let items = this.allItems;
+
+                // Apply filter
+                if (this.currentFilter === 'popular') {
+                    items = items.filter(item => item.isPopular);
+                }
+
+                // Apply search
+                if (this.searchQuery) {
+                    items = items.filter(item =>
+                        item.name.toLowerCase().includes(this.searchQuery) ||
+                        item.description.toLowerCase().includes(this.searchQuery)
+                    );
+                }
+
+                this.filteredItems = items;
+                this.renderItems();
+            }
+
+            renderItems() {
+                const container = document.getElementById('menu-items-container');
+                const emptyState = document.getElementById('empty-state');
+
+                if (this.filteredItems.length === 0) {
+                    container.innerHTML = '';
+                    emptyState.classList.remove('hidden');
+                    return;
+                }
+
+                emptyState.classList.add('hidden');
+                container.innerHTML = this.filteredItems.map(item => this.createItemCard(item)).join('');
+            }
+
+            createItemCard(item) {
+                const imageSection = item.imageUrl
+                    ? `<div class="mb-4 rounded-xl overflow-hidden h-48 bg-moss">
+                           <img src="${item.imageUrl}"
+                                alt="${item.name}"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                           <div style="display: none; height: 100%; align-items: center; justify-content: center; font-size: 4rem;">
+                               🍵
+                           </div>
+                       </div>`
+                    : `<div class="mb-4 rounded-xl h-48 bg-moss flex items-center justify-center text-6xl">
+                           🍵
+                       </div>`;
+
+                const popularBadge = item.isPopular
+                    ? `<span class="px-3 py-1 rounded-full text-xs font-semibold"
+                             style="background: linear-gradient(to right, rgba(37, 95, 56, 0.5), rgba(31, 125, 83, 0.5)); color: #6EE7B7;">
+                            ⭐ Popular
+                        </span>`
+                    : '';
+
+                return `
+                    <div class="menu-item-card rounded-2xl p-6 transition-all duration-300 hover:scale-105 group"
+                         style="background-color: rgba(39, 57, 28, 0.4); border: 2px solid rgba(37, 95, 56, 0.3); backdrop-filter: blur(12px);">
+
+                        ${imageSection}
+
+                        <div class="flex items-start justify-between mb-3">
+                            <h3 class="text-xl font-bold text-emerald-400 flex-1">
+                                ${item.name}
+                            </h3>
+                            <span class="text-2xl font-bold text-emerald-500 ml-4">
+                                $${item.price.toFixed(2)}
+                            </span>
+                        </div>
+
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                            ${item.description}
+                        </p>
+
+                        <div class="flex items-center gap-2">
+                            ${popularBadge}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize menu page when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new MenuPage();
+        });
+    </script>
+
+    <style>
+        .filter-btn {
+            background-color: rgba(24, 35, 15, 0.5);
+            border: 1px solid rgba(37, 95, 56, 0.5);
+            color: #9CA3AF;
+        }
+
+            .filter-btn:hover {
+                background-color: rgba(37, 95, 56, 0.3);
+                color: #D1D5DB;
+            }
+
+            .filter-btn.active {
+                background: linear-gradient(to right, #255F38, #1F7D53);
+                border-color: rgba(31, 125, 83, 0.5);
+                color: #FFFFFF;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            }
+
+        #search-input::placeholder {
+            color: #6B7280;
+        }
+
+        #search-input:focus {
+            border-color: #1F7D53;
+        }
+
+        .animate-spin {
+            animation: spin 2s linear infinite;
+        }
+
+        @@keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Smooth card appearance */
+        .menu-item-card {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+}
