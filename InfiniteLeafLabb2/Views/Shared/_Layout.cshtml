@@ -11,21 +11,20 @@
     <meta name="author" content="Infinite Leaf Tea Café" />
     <meta name="robots" content="index, follow" />
 
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="@ViewData["Title"] - Infinite Leaf" />
+    <meta name="twitter:description" content="@(ViewData["Description"] ?? "Premium tea experience awaits you")" />
+
     <!-- Canonical URL -->
     <link rel="canonical" href="@(Context.Request.Scheme)://@(Context.Request.Host)@(Context.Request.Path)" />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="~/favicon.png" />
-    <link rel="apple-touch-icon" href="~/apple-touch-icon.png" />
 
-    <!-- Preconnect to improve performance -->
     <link rel="preconnect" href="https://cdn.tailwindcss.com" />
-
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/leaf.css" />
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Structured Data (JSON-LD) for rich snippets -->
     <script type="application/ld+json">
         {
             "@@context": "https://schema.org",
