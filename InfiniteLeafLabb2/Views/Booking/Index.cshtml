@@ -1,0 +1,626 @@
+﻿@{
+    ViewData["Title"] = "Book a Table";
+}
+
+<!-- Booking Page Container -->
+<div class="min-h-screen py-12 px-4">
+    <div class="max-w-5xl mx-auto">
+
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="text-6xl mb-4">🍵</div>
+            <h1 class="text-5xl font-bold text-white mb-4">
+                Reserve Your Table
+            </h1>
+            <p class="text-xl text-gray-400">
+                Experience the art of tea in a serene environment
+            </p>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="mb-12">
+            <div class="flex items-center justify-between max-w-3xl mx-auto">
+                <div class="step-indicator active" data-step="1">
+                    <div class="step-circle">
+                        <span class="step-number">1</span>
+                        <svg class="step-check hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="step-label">Date & Time</div>
+                </div>
+                <div class="step-line"></div>
+
+                <div class="step-indicator" data-step="2">
+                    <div class="step-circle">
+                        <span class="step-number">2</span>
+                        <svg class="step-check hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="step-label">Party Size</div>
+                </div>
+                <div class="step-line"></div>
+
+                <div class="step-indicator" data-step="3">
+                    <div class="step-circle">
+                        <span class="step-number">3</span>
+                        <svg class="step-check hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="step-label">Select Table</div>
+                </div>
+                <div class="step-line"></div>
+
+                <div class="step-indicator" data-step="4">
+                    <div class="step-circle">
+                        <span class="step-number">4</span>
+                        <svg class="step-check hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="step-label">Your Details</div>
+                </div>
+                <div class="step-line"></div>
+
+                <div class="step-indicator" data-step="5">
+                    <div class="step-circle">
+                        <span class="step-number">5</span>
+                        <svg class="step-check hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="step-label">Confirm</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Form Container -->
+        <div class="rounded-2xl p-8 shadow-2xl"
+             style="background-color: rgba(39, 57, 28, 0.5); border: 2px solid rgba(37, 95, 56, 0.4); backdrop-filter: blur(16px);">
+
+            <!-- Step 1: Date & Time -->
+            <div id="step-1" class="booking-step active">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-emerald-400 mb-2">
+                        When would you like to visit?
+                    </h2>
+                    <p class="text-gray-400">
+                        Select your preferred date and time
+                    </p>
+                </div>
+
+                <div class="max-w-md mx-auto space-y-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-emerald-400 mb-2">
+                            Date
+                        </label>
+                        <input type="date"
+                               id="booking-date"
+                               class="w-full px-4 py-3 rounded-lg outline-none transition-all duration-300"
+                               style="background-color: #18230F; border: 2px solid rgba(37, 95, 56, 0.5); color: #FFFFFF;"
+                               required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-emerald-400 mb-2">
+                            Time
+                        </label>
+                        <select id="booking-time"
+                                class="w-full px-4 py-3 rounded-lg outline-none transition-all duration-300"
+                                style="background-color: #18230F; border: 2px solid rgba(37, 95, 56, 0.5); color: #FFFFFF;"
+                                required>
+                            <option value="">Select a time</option>
+                            <option value="09:00">9:00 AM</option>
+                            <option value="09:30">9:30 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="10:30">10:30 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="11:30">11:30 AM</option>
+                            <option value="12:00">12:00 PM</option>
+                            <option value="12:30">12:30 PM</option>
+                            <option value="13:00">1:00 PM</option>
+                            <option value="13:30">1:30 PM</option>
+                            <option value="14:00">2:00 PM</option>
+                            <option value="14:30">2:30 PM</option>
+                            <option value="15:00">3:00 PM</option>
+                            <option value="15:30">3:30 PM</option>
+                            <option value="16:00">4:00 PM</option>
+                            <option value="16:30">4:30 PM</option>
+                            <option value="17:00">5:00 PM</option>
+                            <option value="17:30">5:30 PM</option>
+                            <option value="18:00">6:00 PM</option>
+                            <option value="18:30">6:30 PM</option>
+                            <option value="19:00">7:00 PM</option>
+                            <option value="19:30">7:30 PM</option>
+                            <option value="20:00">8:00 PM</option>
+                        </select>
+                    </div>
+
+                    <button onclick="bookingFlow.nextStep()"
+                            class="w-full py-4 rounded-lg font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg text-white"
+                            style="background: linear-gradient(to right, #255F38, #1F7D53);">
+                        Continue to Party Size →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Party Size -->
+            <div id="step-2" class="booking-step hidden">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-emerald-400 mb-2">
+                        How many guests?
+                    </h2>
+                    <p class="text-gray-400">
+                        Select the number of people in your party
+                    </p>
+                </div>
+
+                <div class="max-w-2xl mx-auto">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                        <button class="party-size-btn" data-size="1">
+                            <span class="text-4xl mb-2">👤</span>
+                            <span class="text-xl font-bold">1 Guest</span>
+                        </button>
+                        <button class="party-size-btn" data-size="2">
+                            <span class="text-4xl mb-2">👥</span>
+                            <span class="text-xl font-bold">2 Guests</span>
+                        </button>
+                        <button class="party-size-btn" data-size="3">
+                            <span class="text-4xl mb-2">👥</span>
+                            <span class="text-xl font-bold">3 Guests</span>
+                        </button>
+                        <button class="party-size-btn" data-size="4">
+                            <span class="text-4xl mb-2">👨‍👩‍👧‍👦</span>
+                            <span class="text-xl font-bold">4 Guests</span>
+                        </button>
+                        <button class="party-size-btn" data-size="5">
+                            <span class="text-4xl mb-2">👨‍👩‍👧‍👦</span>
+                            <span class="text-xl font-bold">5 Guests</span>
+                        </button>
+                        <button class="party-size-btn" data-size="6">
+                            <span class="text-4xl mb-2">👨‍👩‍👧‍👦</span>
+                            <span class="text-xl font-bold">6 Guests</span>
+                        </button>
+                        <button class="party-size-btn" data-size="7">
+                            <span class="text-4xl mb-2">👨‍👩‍👧‍👦</span>
+                            <span class="text-xl font-bold">7 Guests</span>
+                        </button>
+                        <button class="party-size-btn" data-size="8">
+                            <span class="text-4xl mb-2">👨‍👩‍👧‍👦</span>
+                            <span class="text-xl font-bold">8+ Guests</span>
+                        </button>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <button onclick="bookingFlow.previousStep()"
+                                class="flex-1 py-4 rounded-lg font-bold text-lg transition-all duration-300 text-gray-400 border-2 border-gray-600 hover:border-emerald-500 hover:text-emerald-400">
+                            ← Back
+                        </button>
+                        <button onclick="bookingFlow.nextStep()"
+                                class="flex-1 py-4 rounded-lg font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg text-white"
+                                style="background: linear-gradient(to right, #255F38, #1F7D53);">
+                            Find Available Tables →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Table Selection -->
+            <div id="step-3" class="booking-step hidden">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-emerald-400 mb-2">
+                        Choose your table
+                    </h2>
+                    <p class="text-gray-400">
+                        Select from available tables that fit your party
+                    </p>
+                </div>
+
+                <!-- Loading State -->
+                <div id="tables-loading" class="text-center py-12">
+                    <div class="spinner mb-4"></div>
+                    <p class="text-gray-400">Finding available tables...</p>
+                </div>
+
+                <!-- Available Tables -->
+                <div id="available-tables" class="hidden">
+                    <div id="tables-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                        <!-- Tables will be dynamically inserted here -->
+                    </div>
+
+                    <div class="flex gap-4">
+                        <button onclick="bookingFlow.previousStep()"
+                                class="flex-1 py-4 rounded-lg font-bold text-lg transition-all duration-300 text-gray-400 border-2 border-gray-600 hover:border-emerald-500 hover:text-emerald-400">
+                            ← Back
+                        </button>
+                        <button onclick="bookingFlow.nextStep()"
+                                class="flex-1 py-4 rounded-lg font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg text-white"
+                                style="background: linear-gradient(to right, #255F38, #1F7D53);">
+                            Continue to Details →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- No Tables Available -->
+                <div id="no-tables" class="hidden text-center py-12">
+                    <div class="text-6xl mb-4">😔</div>
+                    <p class="text-xl text-gray-400 mb-6">
+                        No tables available for the selected time and party size
+                    </p>
+                    <button onclick="bookingFlow.goToStep(1)"
+                            class="px-8 py-4 rounded-lg font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg text-white"
+                            style="background: linear-gradient(to right, #255F38, #1F7D53);">
+                        Try Different Date/Time
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 4: Personal Details -->
+            <div id="step-4" class="booking-step hidden">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-emerald-400 mb-2">
+                        Your contact information
+                    </h2>
+                    <p class="text-gray-400">
+                        We'll use this to confirm your reservation
+                    </p>
+                </div>
+
+                <div class="max-w-md mx-auto space-y-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-emerald-400 mb-2">
+                            Full Name *
+                        </label>
+                        <input type="text"
+                               id="customer-name"
+                               placeholder="John Doe"
+                               class="w-full px-4 py-3 rounded-lg outline-none transition-all duration-300"
+                               style="background-color: #18230F; border: 2px solid rgba(37, 95, 56, 0.5); color: #FFFFFF;"
+                               required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-emerald-400 mb-2">
+                            Phone Number *
+                        </label>
+                        <input type="tel"
+                               id="customer-phone"
+                               placeholder="+1 (555) 123-4567"
+                               class="w-full px-4 py-3 rounded-lg outline-none transition-all duration-300"
+                               style="background-color: #18230F; border: 2px solid rgba(37, 95, 56, 0.5); color: #FFFFFF;"
+                               required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-emerald-400 mb-2">
+                            Special Requests (Optional)
+                        </label>
+                        <textarea id="special-requests"
+                                  rows="4"
+                                  placeholder="Any dietary restrictions or special occasions?"
+                                  class="w-full px-4 py-3 rounded-lg outline-none transition-all duration-300"
+                                  style="background-color: #18230F; border: 2px solid rgba(37, 95, 56, 0.5); color: #FFFFFF;"></textarea>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <button onclick="bookingFlow.previousStep()"
+                                class="flex-1 py-4 rounded-lg font-bold text-lg transition-all duration-300 text-gray-400 border-2 border-gray-600 hover:border-emerald-500 hover:text-emerald-400">
+                            ← Back
+                        </button>
+                        <button onclick="bookingFlow.nextStep()"
+                                class="flex-1 py-4 rounded-lg font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg text-white"
+                                style="background: linear-gradient(to right, #255F38, #1F7D53);">
+                            Review Booking →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Confirmation Overview -->
+            <div id="step-5" class="booking-step hidden">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-emerald-400 mb-2">
+                        Review your reservation
+                    </h2>
+                    <p class="text-gray-400">
+                        Please confirm all details are correct
+                    </p>
+                </div>
+
+                <div class="max-w-2xl mx-auto">
+                    <div class="rounded-xl p-6 mb-8"
+                         style="background-color: rgba(24, 35, 15, 0.6); border: 1px solid rgba(37, 95, 56, 0.4);">
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <div class="text-emerald-500 text-sm font-semibold mb-1">Date & Time</div>
+                                <div id="confirm-datetime" class="text-white text-lg font-bold"></div>
+                            </div>
+
+                            <div>
+                                <div class="text-emerald-500 text-sm font-semibold mb-1">Party Size</div>
+                                <div id="confirm-guests" class="text-white text-lg font-bold"></div>
+                            </div>
+
+                            <div>
+                                <div class="text-emerald-500 text-sm font-semibold mb-1">Table</div>
+                                <div id="confirm-table" class="text-white text-lg font-bold"></div>
+                            </div>
+
+                            <div>
+                                <div class="text-emerald-500 text-sm font-semibold mb-1">Name</div>
+                                <div id="confirm-name" class="text-white text-lg font-bold"></div>
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <div class="text-emerald-500 text-sm font-semibold mb-1">Phone</div>
+                                <div id="confirm-phone" class="text-white text-lg font-bold"></div>
+                            </div>
+
+                            <div id="confirm-requests-section" class="md:col-span-2 hidden">
+                                <div class="text-emerald-500 text-sm font-semibold mb-1">Special Requests</div>
+                                <div id="confirm-requests" class="text-gray-300"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <button onclick="bookingFlow.previousStep()"
+                                class="flex-1 py-4 rounded-lg font-bold text-lg transition-all duration-300 text-gray-400 border-2 border-gray-600 hover:border-emerald-500 hover:text-emerald-400">
+                            ← Back
+                        </button>
+                        <button onclick="bookingFlow.confirmBooking()"
+                                id="confirm-booking-btn"
+                                class="flex-1 py-4 rounded-lg font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg text-white"
+                                style="background: linear-gradient(to right, #255F38, #1F7D53);">
+                            Confirm Reservation ✓
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div id="step-success" class="booking-step hidden">
+                <div class="text-center py-12">
+                    <div class="text-8xl mb-6 animate-bounce">🎉</div>
+                    <h2 class="text-4xl font-bold text-emerald-400 mb-4">
+                        Reservation Confirmed!
+                    </h2>
+                    <p class="text-xl text-gray-300 mb-8">
+                        Your table has been successfully reserved
+                    </p>
+
+                    <div class="max-w-md mx-auto rounded-xl p-6 mb-8"
+                         style="background-color: rgba(24, 35, 15, 0.6); border: 1px solid rgba(37, 95, 56, 0.4);">
+                        <div id="success-details" class="text-left space-y-3 text-gray-300">
+                            <!-- Success details will be inserted here -->
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <p class="text-gray-400">
+                            A confirmation has been noted. We look forward to serving you!
+                        </p>
+                        <div class="flex gap-4 justify-center">
+                            <a href="@Url.Action("Index", "Home")"
+                               class="px-8 py-4 rounded-lg font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg text-white"
+                               style="background: linear-gradient(to right, #255F38, #1F7D53);">
+                                Return Home
+                            </a>
+                            <a href="@Url.Action("Index", "Menu")"
+                               class="px-8 py-4 rounded-lg font-bold text-lg transition-all duration-300 border-2 border-emerald-500 text-emerald-400 hover:bg-emerald-500/10">
+                                View Menu
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/api-client.js"></script>
+    <script src="~/js/booking-flow.js"></script>
+
+    <style>
+        /* Progress Indicator Styles */
+        .step-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            flex: 1;
+        }
+
+        .step-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: rgba(24, 35, 15, 0.8);
+            border: 2px solid rgba(107, 114, 128, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step-number {
+            color: #9CA3AF;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .step-check {
+            width: 24px;
+            height: 24px;
+            color: white;
+            position: absolute;
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: #9CA3AF;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .step-line {
+            height: 2px;
+            flex: 1;
+            background-color: rgba(107, 114, 128, 0.3);
+            margin: 0 8px;
+            margin-top: -32px;
+            transition: all 0.3s ease;
+        }
+
+        .step-indicator.active .step-circle {
+            background: linear-gradient(to right, #255F38, #1F7D53);
+            border-color: #1F7D53;
+            transform: scale(1.1);
+        }
+
+        .step-indicator.active .step-number {
+            color: white;
+        }
+
+        .step-indicator.active .step-label {
+            color: #10B981;
+        }
+
+        .step-indicator.completed .step-circle {
+            background: linear-gradient(to right, #10B981, #059669);
+            border-color: #10B981;
+        }
+
+        .step-indicator.completed .step-number {
+            display: none;
+        }
+
+        .step-indicator.completed .step-check {
+            display: block;
+        }
+
+        .step-indicator.completed .step-label {
+            color: #10B981;
+        }
+
+        .step-indicator.completed ~ .step-line {
+            background: linear-gradient(to right, #10B981, #059669);
+        }
+
+        /* Party Size Button Styles */
+        .party-size-btn {
+            padding: 24px;
+            border-radius: 16px;
+            background-color: rgba(24, 35, 15, 0.6);
+            border: 2px solid rgba(37, 95, 56, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #9CA3AF;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+            .party-size-btn:hover {
+                border-color: #1F7D53;
+                background-color: rgba(37, 95, 56, 0.2);
+                color: white;
+                transform: scale(1.05);
+            }
+
+            .party-size-btn.selected {
+                border-color: #1F7D53;
+                background: linear-gradient(to bottom right, rgba(37, 95, 56, 0.4), rgba(31, 125, 83, 0.4));
+                color: white;
+                transform: scale(1.05);
+            }
+
+        /* Table Card Styles */
+        .table-card {
+            padding: 24px;
+            border-radius: 16px;
+            background-color: rgba(24, 35, 15, 0.6);
+            border: 2px solid rgba(37, 95, 56, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+            .table-card:hover {
+                border-color: #1F7D53;
+                background-color: rgba(37, 95, 56, 0.2);
+                transform: scale(1.05);
+            }
+
+            .table-card.selected {
+                border-color: #1F7D53;
+                background: linear-gradient(to bottom right, rgba(37, 95, 56, 0.4), rgba(31, 125, 83, 0.4));
+                transform: scale(1.05);
+            }
+
+        /* Spinner Animation */
+        .spinner {
+            border: 4px solid rgba(31, 125, 83, 0.3);
+            border-top: 4px solid #1F7D53;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @@keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Fade In Animation */
+        .booking-step {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile Responsive */
+        @@media (max-width: 768px) {
+            .step-label {
+                font-size: 10px;
+            }
+
+            .step-circle {
+                width: 40px;
+                height: 40px;
+            }
+
+            .step-number {
+                font-size: 16px;
+            }
+        }
+    </style>
+}
