@@ -3,9 +3,7 @@
         this.baseUrl = '';
     }
 
-    /**
-     * Generic request handler with error handling
-     */
+    // Generic request handler with error handling
     async request(endpoint, options = {}) {
         try {
             const response = await fetch(endpoint, {
@@ -35,9 +33,7 @@
         }
     }
 
-    /**
-     * Parse error response
-     */
+    // Parse error response
     async parseError(response) {
         try {
             const errorData = await response.json();
@@ -47,18 +43,14 @@
         }
     }
 
-    /**
-     * GET request
-     */
+    // GET request
     async get(endpoint) {
         return this.request(endpoint, {
             method: 'GET'
         });
     }
 
-    /**
-     * POST request
-     */
+    // POST request
     async post(endpoint, data) {
         return this.request(endpoint, {
             method: 'POST',
@@ -66,9 +58,7 @@
         });
     }
 
-    /**
-     * PUT request
-     */
+    // PUT request
     async put(endpoint, data) {
         return this.request(endpoint, {
             method: 'PUT',
@@ -76,18 +66,15 @@
         });
     }
 
-    /**
-     * DELETE request
-     */
+    // DELETE request
     async delete(endpoint) {
         return this.request(endpoint, {
             method: 'DELETE'
         });
     }
 
-    // ========== Entity-Specific Methods ==========
-
     // Tables
+    //-----------------------------------------
     async getTables() {
         return this.get('/Tables/GetAll');
     }
@@ -109,6 +96,7 @@
     }
 
     // Customers
+    //-----------------------------------------
     async getCustomers() {
         return this.get('/Customers/GetAll');
     }
@@ -130,6 +118,7 @@
     }
 
     // Reservations
+    //-----------------------------------------
     async getReservations() {
         return this.get('/Reservations/GetAll');
     }
@@ -142,17 +131,34 @@
         return this.post('/Reservations/Create', data);
     }
 
+    async updateReservation(id, data) {
+        return this.put(`/Reservations/Update?id=${id}`, data);
+    }
+
     async deleteReservation(id) {
         return this.delete(`/Reservations/Delete?id=${id}`);
     }
 
     // Menu Items
+    //-----------------------------------------
     async getMenuItems() {
         return this.get('/MenuItems/GetAll');
     }
 
     async getMenuItem(id) {
         return this.get(`/MenuItems/GetById?id=${id}`);
+    }
+
+    async createMenuItem(data) {
+        return this.post('/MenuItems/Create', data);
+    }
+
+    async updateMenuItem(id, data) {
+        return this.put(`/MenuItems/Update?id=${id}`, data);
+    }
+
+    async deleteMenuItem(id) {
+        return this.delete(`/MenuItems/Delete?id=${id}`);
     }
 }
 

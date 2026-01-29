@@ -26,9 +26,22 @@ namespace InfiniteLeafLabb2.Services
             return await _apiService.PostAsync<CreateReservationDto, ReservationDto>("api/reservations", reservation);
         }
 
+        public async Task<ReservationDto?> UpdateReservationAsync(int id, UpdateReservationDto reservation)
+        {
+            return await _apiService.PutAsync<UpdateReservationDto, ReservationDto>($"api/reservations/{id}", reservation);
+        }
+
         public async Task<bool> DeleteReservationAsync(int id)
         {
             return await _apiService.DeleteAsync($"api/reservations/{id}");
         }
+    }
+
+    public class UpdateReservationDto
+    {
+        public DateTime StartTime { get; set; }
+        public int NumberOfGuests { get; set; }
+        public int CafeTableId { get; set; }
+        public int CustomerId { get; set; }
     }
 }

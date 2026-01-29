@@ -1,8 +1,4 @@
-﻿/**
- * Modal Handler for Create/Edit/Delete Operations
- * Manages modal state, form generation, and data submission
- */
-class ModalHandler {
+﻿class ModalHandler {
     constructor() {
         this.modal = document.getElementById('crud-modal');
         this.deleteModal = document.getElementById('delete-confirm-modal');
@@ -14,9 +10,7 @@ class ModalHandler {
         this.initializeEventListeners();
     }
 
-    /**
-     * Initialize modal event listeners
-     */
+    // Initialize modal event listeners
     initializeEventListeners() {
         // Close buttons
         document.getElementById('modal-close')?.addEventListener('click', () => this.close());
@@ -42,32 +36,26 @@ class ModalHandler {
         });
     }
 
-    /**
-     * Open modal for create or edit
-     */
-    open(entity, mode = 'create', data = null, id = null) {
+    // Open modal for create or edit
+    async open(entity, mode = 'create', data = null, id = null) {
         this.currentEntity = entity;
         this.currentMode = mode;
         this.currentData = data;
         this.currentId = id;
 
         this.updateModalContent();
-        this.generateForm();
+        await this.generateForm();
         this.modal.classList.add('show');
     }
 
-    /**
-     * Close modal
-     */
+    // Close modal
     close() {
         this.modal.classList.remove('show');
         this.clearForm();
         this.hideError();
     }
 
-    /**
-     * Update modal header based on context
-     */
+    // Update modal header based on context
     updateModalContent() {
         const icons = {
             tables: '🪑',
@@ -97,14 +85,12 @@ class ModalHandler {
             this.currentMode === 'create' ? 'Create' : 'Update';
     }
 
-    /**
-     * Generate form fields based on entity type
-     */
-    generateForm() {
+    // Generate form fields based on entity type
+    async generateForm() {
         const formFields = document.getElementById('form-fields');
         formFields.innerHTML = '';
 
-        const fields = this.getFieldsForEntity(this.currentEntity);
+        const fields = await this.getFieldsForEntity(this.currentEntity);
 
         fields.forEach(field => {
             const fieldHtml = this.createFormField(field);
@@ -117,10 +103,8 @@ class ModalHandler {
         }
     }
 
-    /**
-     * Get field definitions for each entity type
-     */
-    getFieldsForEntity(entity) {
+    // Get field definitions for each entity type
+    async getFieldsForEntity(entity) {
         const fieldDefinitions = {
             tables: [
                 { name: 'tableNumber', label: 'Table Number', type: 'number', required: true, placeholder: 'e.g., 1' },
@@ -130,12 +114,7 @@ class ModalHandler {
                 { name: 'name', label: 'Customer Name', type: 'text', required: true, placeholder: 'e.g., John Doe' },
                 { name: 'phoneNumber', label: 'Phone Number', type: 'tel', required: true, placeholder: 'e.g., +1-555-0123' }
             ],
-            reservations: [
-                { name: 'startTime', label: 'Reservation Date & Time', type: 'datetime-local', required: true },
-                { name: 'numberOfGuests', label: 'Number of Guests', type: 'number', required: true, placeholder: 'e.g., 4' },
-                { name: 'cafeTableId', label: 'Table', type: 'select', required: true, options: [] },
-                { name: 'customerId', label: 'Customer', type: 'select', required: true, options: [] }
-            ],
+            reservations: await this.getReservationFields(),
             menu: [
                 { name: 'name', label: 'Item Name', type: 'text', required: true, placeholder: 'e.g., Green Tea Latte' },
                 { name: 'price', label: 'Price', type: 'number', required: true, placeholder: 'e.g., 5.99', step: '0.01' },
@@ -148,9 +127,31 @@ class ModalHandler {
         return fieldDefinitions[entity] || [];
     }
 
-    /**
-     * Create HTML for a form field
-     */
+    // Get reservation fields with dynamic table and customer options
+    async getReservationFields() {
+        // Fetch tables and customers for dropdowns
+        const tablesResult = await apiClient.getTables();
+        const customersResult = await apiClient.getCustomers();
+
+        const tableOptions = (tablesResult.data || []).map(table => ({
+            value: table.id,
+            text: `Table ${table.tableNumber} (Capacity: ${table.capacity})`
+        }));
+
+        const customerOptions = (customersResult.data || []).map(customer => ({
+            value: customer.id,
+            text: `${customer.name} (${customer.phoneNumber})`
+        }));
+
+        return [
+            { name: 'startTime', label: 'Reservation Date & Time', type: 'datetime-local', required: true },
+            { name: 'numberOfGuests', label: 'Number of Guests', type: 'number', required: true, placeholder: 'e.g., 4' },
+            { name: 'cafeTableId', label: 'Table', type: 'select', required: true, options: tableOptions },
+            { name: 'customerId', label: 'Customer', type: 'select', required: true, options: customerOptions }
+        ];
+    }
+
+    // Create HTML for a form field
     createFormField(field) {
         const requiredMark = field.required ? '<span class="required">*</span>' : '';
 
@@ -185,9 +186,7 @@ class ModalHandler {
         `;
     }
 
-    /**
-     * Populate form with existing data
-     */
+    // Populate form with existing data
     populateForm(data) {
         Object.keys(data).forEach(key => {
             const field = document.getElementById(key);
@@ -203,11 +202,20 @@ class ModalHandler {
                 }
             }
         });
+
+        // Handle nested objects for reservations
+        if (data.cafeTable) {
+            const tableField = document.getElementById('cafeTableId');
+            if (tableField) tableField.value = data.cafeTable.id || data.cafeTableId;
+        }
+
+        if (data.customer) {
+            const customerField = document.getElementById('customerId');
+            if (customerField) customerField.value = data.customer.id || data.customerId;
+        }
     }
 
-    /**
-     * Collect form data
-     */
+    // Collect form data
     getFormData() {
         const form = document.getElementById('modal-form');
         const formData = new FormData(form);
@@ -230,9 +238,7 @@ class ModalHandler {
         return data;
     }
 
-    /**
-     * Handle form submission
-     */
+    // Handle form submission
     async handleSubmit() {
         if (!this.validateForm()) {
             return;
@@ -266,9 +272,7 @@ class ModalHandler {
         }
     }
 
-    /**
-     * Create entity via API
-     */
+    // Create entity via API
     async createEntity(data) {
         const methods = {
             tables: () => apiClient.createTable(data),
@@ -280,9 +284,7 @@ class ModalHandler {
         return methods[this.currentEntity]?.() || { success: false, error: 'Unknown entity type' };
     }
 
-    /**
-     * Update entity via API
-     */
+    // Update entity via API
     async updateEntity(id, data) {
         const methods = {
             tables: () => apiClient.updateTable(id, data),
@@ -294,9 +296,7 @@ class ModalHandler {
         return methods[this.currentEntity]?.() || { success: false, error: 'Unknown entity type' };
     }
 
-    /**
-     * Validate form
-     */
+    // Validate form
     validateForm() {
         const form = document.getElementById('modal-form');
         const fields = form.querySelectorAll('[required]');
@@ -316,9 +316,7 @@ class ModalHandler {
         return isValid;
     }
 
-    /**
-     * Clear form
-     */
+    // Clear form
     clearForm() {
         document.getElementById('modal-form')?.reset();
         document.querySelectorAll('.form-field.error').forEach(field => {
@@ -326,9 +324,7 @@ class ModalHandler {
         });
     }
 
-    /**
-     * Show/hide loading state
-     */
+    // Show/hide loading state
     showLoading(show) {
         const loading = document.getElementById('modal-loading');
         if (show) {
@@ -338,9 +334,7 @@ class ModalHandler {
         }
     }
 
-    /**
-     * Show error message
-     */
+    // Show error message
     showError(message) {
         const errorEl = document.getElementById('modal-error');
         if (errorEl) {
@@ -349,26 +343,18 @@ class ModalHandler {
         }
     }
 
-    /**
-     * Hide error message
-     */
+    // Hide error message
     hideError() {
         document.getElementById('modal-error')?.classList.add('hidden');
     }
 
-    /**
-     * Show success notification
-     */
+    // Show success notification
     showSuccess() {
-        // Simple success feedback (could be enhanced with toast notifications)
         console.log('Operation successful');
     }
 
-    // ========== Delete Modal Methods ==========
+    // Delete Modal Methods
 
-    /**
-     * Open delete confirmation modal
-     */
     openDeleteModal(entity, id, itemName) {
         this.currentEntity = entity;
         this.currentId = id;
@@ -379,16 +365,11 @@ class ModalHandler {
         this.deleteModal.classList.add('show');
     }
 
-    /**
-     * Close delete modal
-     */
     closeDeleteModal() {
         this.deleteModal.classList.remove('show');
     }
 
-    /**
-     * Confirm delete action
-     */
+    // Confirm delete action
     async confirmDelete() {
         const loading = document.getElementById('delete-loading');
         loading?.classList.remove('hidden');
@@ -409,9 +390,7 @@ class ModalHandler {
         }
     }
 
-    /**
-     * Delete entity via API
-     */
+    // Delete entity via API
     async deleteEntity(id) {
         const methods = {
             tables: () => apiClient.deleteTable(id),
@@ -424,5 +403,4 @@ class ModalHandler {
     }
 }
 
-// Create and export a singleton instance
 const modalHandler = new ModalHandler();

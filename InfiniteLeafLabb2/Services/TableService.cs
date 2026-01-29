@@ -37,7 +37,6 @@ namespace InfiniteLeafLabb2.Services
         }
     }
 
-    // DTOs for Create/Update operations
     public class CreateTableDto
     {
         public int TableNumber { get; set; }

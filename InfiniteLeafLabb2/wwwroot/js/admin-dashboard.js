@@ -1,8 +1,4 @@
-﻿/**
- * Admin Dashboard Main Controller
- * Orchestrates section switching, data loading, and component interactions
- */
-class AdminDashboard {
+﻿class AdminDashboard {
     constructor() {
         this.currentSection = 'tables';
         this.data = {
@@ -15,18 +11,16 @@ class AdminDashboard {
         this.initialize();
     }
 
-    /**
-     * Initialize dashboard
-     */
+    
+    // Initialize dashboard
+     
     async initialize() {
         this.attachEventListeners();
         await this.loadInitialData();
         this.showSection(this.currentSection);
     }
 
-    /**
-     * Attach event listeners
-     */
+    // Attach event listeners
     attachEventListeners() {
         // Segmented button navigation
         document.querySelectorAll('.segment-btn').forEach(btn => {
@@ -52,14 +46,6 @@ class AdminDashboard {
                 this.handleEdit(entity, id);
             }
 
-            // View button
-            if (e.target.closest('.view-btn')) {
-                const btn = e.target.closest('.view-btn');
-                const id = parseInt(btn.dataset.id);
-                const entity = btn.dataset.entity || this.currentSection;
-                this.handleView(entity, id);
-            }
-
             // Delete button
             if (e.target.closest('.delete-btn')) {
                 const btn = e.target.closest('.delete-btn');
@@ -70,9 +56,7 @@ class AdminDashboard {
         });
     }
 
-    /**
-     * Load initial data for all sections
-     */
+    // Load initial data for all sections
     async loadInitialData() {
         const loadingPromises = [
             this.loadTables(),
@@ -84,9 +68,7 @@ class AdminDashboard {
         await Promise.all(loadingPromises);
     }
 
-    /**
-     * Load tables data
-     */
+    // Load tables data
     async loadTables() {
         const result = await apiClient.getTables();
         if (result.success) {
@@ -94,9 +76,7 @@ class AdminDashboard {
         }
     }
 
-    /**
-     * Load customers data
-     */
+    // Load customers data
     async loadCustomers() {
         const result = await apiClient.getCustomers();
         if (result.success) {
@@ -104,9 +84,7 @@ class AdminDashboard {
         }
     }
 
-    /**
-     * Load reservations data
-     */
+    // Load reservations data
     async loadReservations() {
         const result = await apiClient.getReservations();
         if (result.success) {
@@ -114,9 +92,7 @@ class AdminDashboard {
         }
     }
 
-    /**
-     * Load menu items data
-     */
+    // Load menu items data
     async loadMenuItems() {
         const result = await apiClient.getMenuItems();
         if (result.success) {
@@ -124,9 +100,7 @@ class AdminDashboard {
         }
     }
 
-    /**
-     * Switch to a different section
-     */
+    // Switch to a different section
     switchSection(section) {
         if (this.currentSection === section) return;
 
@@ -146,9 +120,7 @@ class AdminDashboard {
         this.showSection(section);
     }
 
-    /**
-     * Display the selected section
-     */
+    // Display the selected section
     showSection(section) {
         // Hide all sections
         document.querySelectorAll('.section-content').forEach(el => {
@@ -163,9 +135,7 @@ class AdminDashboard {
         }
     }
 
-    /**
-     * Render section with data
-     */
+    // Render section with data
     renderSection(section) {
         const data = this.data[section] || [];
         const tbody = document.querySelector(`#section-${section} tbody`);
@@ -179,9 +149,7 @@ class AdminDashboard {
         }
     }
 
-    /**
-     * Render empty state
-     */
+    // Render empty state
     renderEmptyState(tbody, section) {
         const entityLabels = {
             tables: 'Tables',
@@ -191,7 +159,7 @@ class AdminDashboard {
         };
 
         const label = entityLabels[section] || 'Items';
-        const singular = label.slice(0, -1); // Remove 's' for singular
+        const singular = label.slice(0, -1);
 
         tbody.innerHTML = `
             <tr>
@@ -208,9 +176,7 @@ class AdminDashboard {
         `;
     }
 
-    /**
-     * Render table rows with data
-     */
+    // Render table rows with data
     renderTableRows(tbody, section, data) {
         const rowGenerators = {
             tables: (item) => this.generateTableRow(item),
@@ -225,9 +191,7 @@ class AdminDashboard {
         tbody.innerHTML = data.map(item => generator(item)).join('');
     }
 
-    /**
-     * Generate table row HTML
-     */
+    // Generate table row with HTML
     generateTableRow(table) {
         return `
             <tr class="hover:bg-moss transition-colors" data-id="${table.id}">
@@ -241,9 +205,7 @@ class AdminDashboard {
         `;
     }
 
-    /**
-     * Generate customer row HTML
-     */
+    // Generate customer row with HTML
     generateCustomerRow(customer) {
         return `
             <tr class="hover:bg-moss transition-colors" data-id="${customer.id}">
@@ -257,9 +219,7 @@ class AdminDashboard {
         `;
     }
 
-    /**
-     * Generate reservation row HTML
-     */
+    // Generate reservation row HTML
     generateReservationRow(reservation) {
         const date = new Date(reservation.startTime);
         const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -273,15 +233,13 @@ class AdminDashboard {
                 <td class="px-4 py-3 text-sm" style="color: #D1D5DB;">${reservation.numberOfGuests} guests</td>
                 <td class="px-4 py-3 text-sm" style="color: #D1D5DB;">Table ${reservation.cafeTable.tableNumber}</td>
                 <td class="px-4 py-3 text-end">
-                    ${this.generateActionButtons(reservation.id, 'reservations', false)}
+                    ${this.generateActionButtons(reservation.id, 'reservations')}
                 </td>
             </tr>
         `;
     }
 
-    /**
-     * Generate menu item row HTML
-     */
+    // Generate menu item row with HTML
     generateMenuItemRow(item) {
         return `
             <tr class="hover:bg-moss transition-colors" data-id="${item.id}">
@@ -293,36 +251,23 @@ class AdminDashboard {
                     ${item.isPopular ? '<span class="text-emerald-600">✓ Popular</span>' : '<span class="text-gray-500">✗</span>'}
                 </td>
                 <td class="px-4 py-3 text-end">
-                    ${this.generateActionButtons(item.id, 'menu', false)}
+                    ${this.generateActionButtons(item.id, 'menu')}
                 </td>
             </tr>
         `;
     }
 
-    /**
-     * Generate action buttons HTML
-     */
-    generateActionButtons(id, entity, showEdit = true) {
-        const editButton = showEdit ? `
-            <button class="edit-btn px-3 py-1 rounded text-sm transition-colors"
-                    style="background-color: rgba(37, 95, 56, 0.5); color: #FFFFFF;"
-                    data-id="${id}"
-                    data-entity="${entity}"
-                    title="Edit">
-                ✏️
-            </button>
-        ` : '';
-
+    // Generate action buttons with HTML
+    generateActionButtons(id, entity) {
         return `
             <div class="flex gap-2 justify-end">
-                <button class="view-btn px-3 py-1 rounded text-sm transition-colors"
-                        style="background-color: rgba(37, 95, 56, 0.3); color: #1F7D53;"
+                <button class="edit-btn px-3 py-1 rounded text-sm transition-colors"
+                        style="background-color: rgba(37, 95, 56, 0.5); color: #FFFFFF;"
                         data-id="${id}"
                         data-entity="${entity}"
-                        title="View Details">
-                    👁️
+                        title="Edit">
+                    ✏️
                 </button>
-                ${editButton}
                 <button class="delete-btn px-3 py-1 rounded text-sm transition-colors"
                         style="background-color: rgba(239, 68, 68, 0.3); color: #FCA5A5;"
                         data-id="${id}"
@@ -334,16 +279,12 @@ class AdminDashboard {
         `;
     }
 
-    /**
-     * Handle create action
-     */
+    //Handle create action
     handleCreate(entity) {
         modalHandler.open(entity, 'create');
     }
 
-    /**
-     * Handle edit action
-     */
+    // Handle edit action
     async handleEdit(entity, id) {
         const item = this.findItemById(entity, id);
         if (item) {
@@ -351,20 +292,7 @@ class AdminDashboard {
         }
     }
 
-    /**
-     * Handle view action
-     */
-    handleView(entity, id) {
-        const item = this.findItemById(entity, id);
-        if (item) {
-            // Show details in a read-only modal or expand row
-            alert(`View details for ${entity} ID: ${id}\n\n${JSON.stringify(item, null, 2)}`);
-        }
-    }
-
-    /**
-     * Handle delete action
-     */
+    // Handle delete action
     handleDelete(entity, id) {
         const item = this.findItemById(entity, id);
         if (item) {
@@ -373,16 +301,12 @@ class AdminDashboard {
         }
     }
 
-    /**
-     * Find item by ID in current section data
-     */
+    // Find item by ID in current section data
     findItemById(entity, id) {
         return this.data[entity]?.find(item => item.id === id);
     }
 
-    /**
-     * Refresh current section data
-     */
+    // Refresh current section data
     async refreshCurrentSection() {
         const loaders = {
             tables: () => this.loadTables(),
@@ -403,5 +327,5 @@ class AdminDashboard {
 let adminDashboard;
 document.addEventListener('DOMContentLoaded', () => {
     adminDashboard = new AdminDashboard();
-    window.adminDashboard = adminDashboard; // Make it globally accessible
+    window.adminDashboard = adminDashboard;
 });

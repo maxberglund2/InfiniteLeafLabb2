@@ -37,7 +37,6 @@ namespace InfiniteLeafLabb2.Services
         }
     }
 
-    // DTOs for Create/Update operations
     public class CreateCustomerDto
     {
         public string Name { get; set; } = null!;

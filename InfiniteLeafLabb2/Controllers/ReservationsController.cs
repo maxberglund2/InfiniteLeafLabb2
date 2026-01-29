@@ -44,6 +44,19 @@ namespace InfiniteLeafLabb2.Controllers
             return Json(result);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateReservationDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _reservationService.UpdateReservationAsync(id, dto);
+            if (result == null)
+                return NotFound(new { message = "Reservation not found" });
+
+            return Json(result);
+        }
+
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
