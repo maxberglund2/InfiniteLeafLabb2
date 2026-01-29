@@ -27,7 +27,7 @@ namespace InfiniteLeafLabb2
             builder.Services.AddHttpClient<ApiService>(client =>
             {
                 // Read API base URL from configuration
-                var apiBaseUrl = builder.Configuration["ApiSettings:BaseUrl"] ?? "https://localhost:7154";
+                var apiBaseUrl = builder.Configuration["ApiSettings:BaseUrl"] ?? "https://localhost:7203";
                 client.BaseAddress = new Uri(apiBaseUrl);
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
             });
