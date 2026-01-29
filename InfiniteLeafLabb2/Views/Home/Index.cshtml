@@ -1,7 +1,289 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
+    var popularItems = ViewBag.PopularItems as List<InfiniteLeafLabb2.Models.DTOs.MenuItemDto> ?? new List<InfiniteLeafLabb2.Models.DTOs.MenuItemDto>();
 }
 
-<div class="text-center text-4xl">
-    <h1 class="text-white text-uppercase">Home</h1>
-</div>
+<!-- Hero Section -->
+<section class="relative py-20 px-4 overflow-hidden">
+    <!-- Decorative background elements -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-20 left-10 text-9xl">🍃</div>
+        <div class="absolute bottom-20 right-10 text-9xl">🍵</div>
+    </div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+        <div class="text-center mb-16">
+            <div class="inline-block mb-6 px-6 py-2 rounded-full text-sm font-semibold"
+                 style="background: linear-gradient(to right, rgba(37, 95, 56, 0.3), rgba(31, 125, 83, 0.3)); border: 1px solid rgba(31, 125, 83, 0.5);">
+                ✨ Premium Tea Experience
+            </div>
+
+            <h1 class="text-6xl md:text-7xl font-black mb-6 leading-tight">
+                <span class="bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600 bg-clip-text text-transparent">
+                    Infinite Leaf
+                </span>
+            </h1>
+
+            <p class="text-2xl md:text-3xl text-gray-300 mb-4 font-light">
+                Where every cup tells a story
+            </p>
+
+            <p class="text-lg text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+                Discover the art of tea at Infinite Leaf, a sanctuary where ancient traditions meet modern sophistication.
+                We curate the finest loose-leaf teas from around the world, bringing you an unparalleled sensory journey.
+            </p>
+
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a href="#menu-section"
+                   class="px-8 py-4 rounded-xl text-lg font-bold text-white shadow-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-emerald-500/50"
+                   style="background: linear-gradient(to right, #255F38, #1F7D53);">
+                    🍵 Explore Our Menu
+                </a>
+                <a href="#tables-section"
+                   class="px-8 py-4 rounded-xl text-lg font-bold transition-all duration-300 transform hover:scale-105 border-2 text-emerald-400 border-emerald-500 hover:bg-emerald-500/10">
+                    🪑 Reserve a Table
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="py-16 px-4">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="text-center p-8 rounded-2xl transition-all duration-300 hover:scale-105"
+                 style="background-color: rgba(39, 57, 28, 0.4); border: 2px solid rgba(37, 95, 56, 0.3);">
+                <div class="text-5xl mb-4">🌿</div>
+                <h3 class="text-xl font-bold text-emerald-400 mb-3">Organic & Pure</h3>
+                <p class="text-gray-400 leading-relaxed">
+                    Hand-selected organic teas sourced directly from sustainable farms across Asia, ensuring the highest quality and freshness.
+                </p>
+            </div>
+
+            <div class="text-center p-8 rounded-2xl transition-all duration-300 hover:scale-105"
+                 style="background-color: rgba(39, 57, 28, 0.4); border: 2px solid rgba(37, 95, 56, 0.3);">
+                <div class="text-5xl mb-4">👨‍🍳</div>
+                <h3 class="text-xl font-bold text-emerald-400 mb-3">Expert Crafted</h3>
+                <p class="text-gray-400 leading-relaxed">
+                    Our tea sommeliers blend traditional techniques with innovative flavors to create unforgettable taste experiences.
+                </p>
+            </div>
+
+            <div class="text-center p-8 rounded-2xl transition-all duration-300 hover:scale-105"
+                 style="background-color: rgba(39, 57, 28, 0.4); border: 2px solid rgba(37, 95, 56, 0.3);">
+                <div class="text-5xl mb-4">🏞️</div>
+                <h3 class="text-xl font-bold text-emerald-400 mb-3">Tranquil Ambiance</h3>
+                <p class="text-gray-400 leading-relaxed">
+                    Escape the chaos in our serene tea lounge, designed for relaxation, conversation, and mindful moments.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Popular Menu Section -->
+<section id="menu-section" class="py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                ☕ Customer Favorites
+            </h2>
+            <p class="text-xl text-gray-400">
+                Discover our most beloved tea creations
+            </p>
+        </div>
+
+        @if (popularItems.Any())
+        {
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach (var item in popularItems)
+                {
+                    <div class="rounded-2xl p-6 transition-all duration-300 hover:scale-105 group"
+                         style="background-color: rgba(39, 57, 28, 0.4); border: 2px solid rgba(37, 95, 56, 0.3); backdrop-filter: blur(12px);">
+
+                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                        {
+                            <div class="mb-4 rounded-xl overflow-hidden h-48 bg-moss">
+                                <img src="@item.ImageUrl"
+                                     alt="@item.Name"
+                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                                <div style="display: none; height: 100%; align-items: center; justify-content: center; font-size: 4rem;">
+                                    🍵
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="mb-4 rounded-xl h-48 bg-moss flex items-center justify-center text-6xl">
+                                🍵
+                            </div>
+                        }
+
+                        <div class="flex items-start justify-between mb-3">
+                            <h3 class="text-xl font-bold text-emerald-400 flex-1">
+                                @item.Name
+                            </h3>
+                            <span class="text-2xl font-bold text-emerald-500 ml-4">
+                                $@item.Price.ToString("0.00")
+                            </span>
+                        </div>
+
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                            @item.Description
+                        </p>
+
+                        <div class="flex items-center gap-2">
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold"
+                                  style="background: linear-gradient(to right, rgba(37, 95, 56, 0.5), rgba(31, 125, 83, 0.5)); color: #6EE7B7;">
+                                ⭐ Popular
+                            </span>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-16 rounded-2xl"
+                 style="background-color: rgba(39, 57, 28, 0.4); border: 2px solid rgba(37, 95, 56, 0.3);">
+                <div class="text-6xl mb-4">🍵</div>
+                <p class="text-xl text-gray-400">
+                    Our menu is being curated. Check back soon!
+                </p>
+            </div>
+        }
+
+        <div class="text-center mt-12">
+            <a href="#"
+               class="inline-block px-8 py-4 rounded-xl text-lg font-bold text-white shadow-lg transition-all duration-300 transform hover:scale-105"
+               style="background: linear-gradient(to right, #255F38, #1F7D53);">
+                View Full Menu
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Tables/Reservations Section -->
+<section id="tables-section" class="py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+        <div class="rounded-2xl p-12 text-center"
+             style="background: linear-gradient(135deg, rgba(37, 95, 56, 0.2), rgba(31, 125, 83, 0.2)); border: 2px solid rgba(37, 95, 56, 0.4); backdrop-filter: blur(12px);">
+
+            <div class="text-6xl mb-6">🪑</div>
+
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                Reserve Your Experience
+            </h2>
+
+            <p class="text-xl text-gray-300 max-w-2xl mx-auto mb-8 leading-relaxed">
+                Secure your spot in our tranquil tea lounge. Whether you're meeting friends,
+                seeking solitude, or celebrating a special occasion, we have the perfect table for you.
+            </p>
+
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a href="#"
+                   class="px-8 py-4 rounded-xl text-lg font-bold text-white shadow-lg transition-all duration-300 transform hover:scale-105"
+                   style="background: linear-gradient(to right, #255F38, #1F7D53);">
+                    📅 Book a Table
+                </a>
+                <a href="#"
+                   class="px-8 py-4 rounded-xl text-lg font-bold transition-all duration-300 transform hover:scale-105 border-2 text-emerald-400 border-emerald-500 hover:bg-emerald-500/10">
+                    ℹ️ View Table Layout
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Experience Section -->
+<section class="py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                ✨ The Infinite Leaf Experience
+            </h2>
+            <p class="text-xl text-gray-400">
+                More than just tea – it's a journey
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="rounded-2xl p-8"
+                 style="background-color: rgba(39, 57, 28, 0.4); border: 2px solid rgba(37, 95, 56, 0.3);">
+                <h3 class="text-2xl font-bold text-emerald-400 mb-4">🎭 Tea Ceremonies</h3>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    Join our expert tea masters for traditional tea ceremonies every Saturday.
+                    Learn the art of tea preparation while experiencing the cultural heritage behind each blend.
+                </p>
+                <a href="#" class="text-emerald-500 font-semibold hover:text-emerald-400 transition-colors">
+                    Learn More →
+                </a>
+            </div>
+
+            <div class="rounded-2xl p-8"
+                 style="background-color: rgba(39, 57, 28, 0.4); border: 2px solid rgba(37, 95, 56, 0.3);">
+                <h3 class="text-2xl font-bold text-emerald-400 mb-4">🎓 Tea Workshops</h3>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    Become a tea connoisseur in our monthly workshops. From tea tasting fundamentals
+                    to advanced brewing techniques, there's always something new to discover.
+                </p>
+                <a href="#" class="text-emerald-500 font-semibold hover:text-emerald-400 transition-colors">
+                    Upcoming Events →
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-20 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+        <div class="rounded-2xl p-12"
+             style="background: linear-gradient(135deg, rgba(37, 95, 56, 0.3), rgba(31, 125, 83, 0.3)); border: 2px solid rgba(31, 125, 83, 0.5); backdrop-filter: blur(12px);">
+
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                Begin Your Tea Journey Today
+            </h2>
+
+            <p class="text-xl text-gray-300 mb-8 leading-relaxed">
+                Visit Infinite Leaf and discover why tea is more than just a beverage – it's a way of life.
+            </p>
+
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a href="#menu-section"
+                   class="px-8 py-4 rounded-xl text-lg font-bold text-white shadow-2xl transition-all duration-300 transform hover:scale-105"
+                   style="background: linear-gradient(to right, #255F38, #1F7D53);">
+                    🍵 Explore Menu
+                </a>
+                <a href="#tables-section"
+                   class="px-8 py-4 rounded-xl text-lg font-bold transition-all duration-300 transform hover:scale-105 border-2 text-emerald-400 border-emerald-500 hover:bg-emerald-500/10">
+                    📍 Visit Us
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Add smooth gradient animation */
+    @@keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    .bg-clip-text {
+        -webkit-background-clip: text;
+        background-clip: text;
+    }
+</style>

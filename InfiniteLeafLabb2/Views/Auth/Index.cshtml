@@ -2,12 +2,14 @@
     ViewData["Title"] = "Admin Login";
 }
 
-<div class="h-full flex items-center justify-center px-4">
-    <div class="rounded-2xl shadow-2xl w-full max-w-md p-8" style="background-color: rgba(39, 57, 28, 0.4); border: 2px solid rgba(37, 95, 56, 0.3); backdrop-filter: blur(12px);">
+<div class="flex flex-col justify-center items-center min-h-[70vh] px-4">
+    <div class="rounded-2xl shadow-2xl w-full max-w-md p-8"
+         style="background-color: rgba(39, 57, 28, 0.4); border: 2px solid rgba(37, 95, 56, 0.3); backdrop-filter: blur(12px);">
+
         <div class="text-center mb-8">
             <div class="text-5xl mb-4">🍃</div>
-            <h1 class="text-4xl font-bold mb-2" style="color: #FFFFFF;">Infinite Leaf</h1>
-            <p style="color: #9CA3AF;">Admin Portal</p>
+            <h1 class="text-4xl font-bold mb-2 text-white">Infinite Leaf</h1>
+            <p class="text-gray-400">Admin Portal</p>
             <div class="h-1 w-20 mx-auto mt-4" style="background: linear-gradient(to right, transparent, #1F7D53, transparent);"></div>
         </div>
 
@@ -20,33 +22,33 @@
 
         <form method="post" asp-action="Login" asp-controller="Auth" class="space-y-6">
             <div>
-                <label for="username" class="block text-sm font-medium mb-2" style="color: #D1D5DB;">
+                <label for="username" class="block text-sm font-medium mb-2 text-gray-300">
                     Username
                 </label>
                 <input type="text"
                        id="username"
                        name="username"
                        required
-                       class="w-full px-4 py-3 rounded-lg outline-none transition"
+                       class="w-full px-4 py-3 rounded-lg outline-none transition focus:border-emerald-500"
                        style="background-color: #18230F; border: 1px solid rgba(37, 95, 56, 0.5); color: #FFFFFF;"
                        placeholder="Enter your username">
             </div>
 
             <div>
-                <label for="password" class="block text-sm font-medium mb-2" style="color: #D1D5DB;">
+                <label for="password" class="block text-sm font-medium mb-2 text-gray-300">
                     Password
                 </label>
                 <input type="password"
                        id="password"
                        name="password"
                        required
-                       class="w-full px-4 py-3 rounded-lg outline-none transition"
+                       class="w-full px-4 py-3 rounded-lg outline-none transition focus:border-emerald-500"
                        style="background-color: #18230F; border: 1px solid rgba(37, 95, 56, 0.5); color: #FFFFFF;"
                        placeholder="Enter your password">
             </div>
 
             <button type="submit"
-                    class="w-full text-white font-semibold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+                    class="w-full text-white font-semibold py-3 rounded-lg transition-all duration-300 transform hover:scale-[1.02] active:scale-95 shadow-lg"
                     style="background: linear-gradient(to right, #255F38, #1F7D53);">
                 Sign In
             </button>
@@ -54,7 +56,7 @@
 
         <div class="mt-6 text-center">
             <a href="@Url.Action("Index", "Home")"
-               class="text-sm font-medium transition-colors inline-flex items-center gap-2"
+               class="text-sm font-medium transition-colors hover:text-emerald-400 inline-flex items-center gap-2"
                style="color: #1F7D53;">
                 <span>←</span> Back to Home
             </a>

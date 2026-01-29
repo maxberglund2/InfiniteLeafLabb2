@@ -10,54 +10,171 @@
 </head>
 <body class="flex bg-dark-forest flex-col min-h-screen text-white">
 
-    <header class="bg-moss shadow-sm">
+    <header class="bg-moss shadow-lg border-b border-jade" style="backdrop-filter: blur(10px);">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex-shrink-0 flex items-center">
-                    <a class="text-xl font-bold text-emerald-600 hover:text-emerald-700 transition"
-                       asp-area="" asp-controller="Home" asp-action="Index">
+            <div class="flex justify-between h-20 items-center">
+                <!-- Logo/Brand -->
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <div class="text-3xl">🍃</div>
+                    <a class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-emerald-600 bg-clip-text text-transparent hover:scale-105 transition-transform"
+                       asp-area="" asp-controller="Home" asp-action="Index"
+                       style="font-family: 'Georgia', serif;">
                         Infinite Leaf
                     </a>
                 </div>
 
-                <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex md:items-center md:gap-2">
                     <a asp-controller="Home" asp-action="Index"
-                       class="border-transparent  hover:border-emerald-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                        Home
+                       class="nav-link px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 text-gray-300 hover:text-white hover:bg-jade">
+                        🏠 Home
                     </a>
-                    <a asp-controller="Admin" asp-action="Index"
-                       class="border-transparent  hover:border-emerald-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                        Admin
+                    <a href="#menu-section"
+                       class="nav-link px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 text-gray-300 hover:text-white hover:bg-jade">
+                        🍵 Menu
                     </a>
+                    <a href="#tables-section"
+                       class="nav-link px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 text-gray-300 hover:text-white hover:bg-jade">
+                        🪑 Tables
+                    </a>
+
+                    @if (Context.Session.GetString("IsAdmin") == "true")
+                    {
+                        <div class="h-6 w-px bg-jade mx-2"></div>
+                        <a asp-controller="Admin" asp-action="Index"
+                           class="nav-link px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 text-emerald-400 hover:text-emerald-300 hover:bg-jade">
+                            ⚙️ Admin
+                        </a>
+                        <a asp-controller="Auth" asp-action="Logout"
+                           class="nav-link px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 text-red-400 hover:text-red-300 hover:bg-red-900/20">
+                            🚪 Logout
+                        </a>
+                    }
+                    else
+                    {
+                        <div class="h-6 w-px bg-jade mx-2"></div>
+                        <a asp-controller="Auth" asp-action="Index"
+                           class="px-5 py-2 rounded-lg text-sm font-bold transition-all duration-300 transform hover:scale-105 shadow-lg text-white"
+                           style="background: linear-gradient(to right, #255F38, #1F7D53);">
+                            🔐 Admin Login
+                        </a>
+                    }
                 </div>
 
-                <div class="flex items-center sm:hidden">
-                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover: hover:bg-gray-100 focus:outline-none" aria-controls="mobile-menu" aria-expanded="false">
+                <!-- Mobile menu button -->
+                <div class="flex items-center md:hidden">
+                    <button type="button"
+                            id="mobile-menu-button"
+                            class="inline-flex items-center justify-center p-2 rounded-lg text-gray-400 hover:text-white hover:bg-jade focus:outline-none transition-colors"
+                            aria-controls="mobile-menu"
+                            aria-expanded="false">
                         <span class="sr-only">Open main menu</span>
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
+                </div>
+            </div>
+
+            <!-- Mobile menu -->
+            <div class="md:hidden hidden" id="mobile-menu">
+                <div class="px-2 pt-2 pb-3 space-y-1 bg-dark-forest rounded-lg mt-2 border border-jade">
+                    <a asp-controller="Home" asp-action="Index"
+                       class="block px-4 py-3 rounded-lg text-base font-semibold text-gray-300 hover:text-white hover:bg-jade transition-colors">
+                        🏠 Home
+                    </a>
+                    <a href="#menu-section"
+                       class="block px-4 py-3 rounded-lg text-base font-semibold text-gray-300 hover:text-white hover:bg-jade transition-colors">
+                        🍵 Menu
+                    </a>
+                    <a href="#tables-section"
+                       class="block px-4 py-3 rounded-lg text-base font-semibold text-gray-300 hover:text-white hover:bg-jade transition-colors">
+                        🪑 Tables
+                    </a>
+
+                    @if (Context.Session.GetString("IsAdmin") == "true")
+                    {
+                        <div class="h-px bg-jade my-2"></div>
+                        <a asp-controller="Admin" asp-action="Index"
+                           class="block px-4 py-3 rounded-lg text-base font-semibold text-emerald-400 hover:text-emerald-300 hover:bg-jade transition-colors">
+                            ⚙️ Admin Dashboard
+                        </a>
+                        <a asp-controller="Auth" asp-action="Logout"
+                           class="block px-4 py-3 rounded-lg text-base font-semibold text-red-400 hover:text-red-300 hover:bg-red-900/20 transition-colors">
+                            🚪 Logout
+                        </a>
+                    }
+                    else
+                    {
+                        <div class="h-px bg-jade my-2"></div>
+                        <a asp-controller="Auth" asp-action="Index"
+                           class="block px-4 py-3 rounded-lg text-base font-bold text-white text-center"
+                           style="background: linear-gradient(to right, #255F38, #1F7D53);">
+                            🔐 Admin Login
+                        </a>
+                    }
                 </div>
             </div>
         </nav>
     </header>
 
-    <div class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex-grow">
         <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="bg-moss py-6">
-        <div class="max-w-7xl mx-auto px-4 text-center text-sm ">
-            &copy; 2026 - <span class="font-semibold">InfiniteLeafLabb2</span> -
-            <a class="text-emerald-600 hover:underline" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="bg-moss py-8 border-t border-jade">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="mb-4">
+                <span class="text-3xl">🍃</span>
+            </div>
+            <p class="text-sm text-gray-400">
+                &copy; 2026 <span class="font-semibold text-emerald-600">Infinite Leaf Tea Café</span>
+            </p>
+            <p class="text-xs text-gray-500 mt-2">
+                Where every cup tells a story
+            </p>
         </div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button')?.addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('mobile-menu');
+            const button = document.getElementById('mobile-menu-button');
+
+            if (!menu?.contains(event.target) && !button?.contains(event.target)) {
+                menu?.classList.add('hidden');
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    const element = document.querySelector(href);
+                    if (element) {
+                        e.preventDefault();
+                        element.scrollIntoView({ behavior: 'smooth' });
+                        // Close mobile menu after clicking
+                        document.getElementById('mobile-menu')?.classList.add('hidden');
+                    }
+                }
+            });
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
